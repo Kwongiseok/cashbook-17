@@ -15,6 +15,7 @@ export default class Component {
   render(): void {
     this.$target.innerHTML = this.template();
     this.setEvent();
+    this.mounted();
   }
   mounted(): void {} // 자식 컴포넌트 추가
   setEvent(): void {} // 이벤트 등록

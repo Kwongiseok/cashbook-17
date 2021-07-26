@@ -29,12 +29,7 @@ export default class Router {
   }
 
   registerComponent(path: string, state: object) {
-    this.clearRoot();
     const componentClass: ClassContructor = this.routes[path];
     new componentClass(this.$root, state);
-  }
-
-  clearRoot() {
-    this.$root.innerHTML = '';
   }
 }
