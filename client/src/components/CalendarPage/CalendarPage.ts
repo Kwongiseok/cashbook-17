@@ -1,12 +1,15 @@
 import Component from '../common/Component';
+import Calendar from './Calendar/Calendar';
 
-class CalendarPage extends Component {
-  setup() {}
+export default class CalendarPage extends Component {
+  mounted() {
+    const $wrapper = document.querySelector('.calendar-wrapper');
 
-  mounted() {}
+    new Calendar($wrapper as HTMLElement, { year: 4, month: 5 });
+  }
 
   template(): string {
-    return '';
+    return '<div class="calendar-wrapper"></div>';
   }
 
   setEvent() {}

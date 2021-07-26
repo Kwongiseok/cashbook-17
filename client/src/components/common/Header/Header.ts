@@ -20,7 +20,7 @@ export default class Header extends Component {
       emit('statechange', { ...history.state, path: '/chart' });
     });
     test2?.addEventListener('click', () => {
-      emit('statechange', { ...history.state, path: '/' });
+      emit('statechange', { ...history.state, path: '/calendar' });
     });
   }
 }

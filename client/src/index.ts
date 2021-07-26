@@ -2,10 +2,13 @@ import Router from './router';
 import Header from './components/common/Header/Header';
 import ChartPage from './components/ChartPage/ChartPage';
 import { emit } from './utils/customEvent';
+import CalendarPage from './components/CalendarPage/CalendarPage';
+// import './index.scss';
 
 const routes = {
   '/': Header,
   '/chart': ChartPage,
+  '/calendar': CalendarPage,
 };
 
 const $root: HTMLElement = document.getElementById('root') as HTMLElement;
