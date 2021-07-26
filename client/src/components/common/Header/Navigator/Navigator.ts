@@ -1,6 +1,6 @@
-import Component from '../common/Component';
+import Component from '../../Component';
 
-class CalendarPage extends Component {
+class Navigator extends Component {
   setup() {}
 
   mounted() {}
