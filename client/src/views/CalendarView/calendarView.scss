@@ -42,16 +42,37 @@
 
   .calendar-body {
     display: grid;
-    margin-top: 4rem;
     width: 70%;
-    height: 85%;
+    height: 90%;
     grid-template-columns: repeat(7, 1fr);
     grid-template-rows: repeat(6, 1fr);
     overflow: auto;
     grid-column-gap: 4px;
     grid-row-gap: 4px;
     margin: auto;
-    overflow: hidden;
+    margin-top: 4rem;
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .calendar-footer {
+    display: flex;
+    width: 70%;
+    margin: auto;
+    margin-top: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    color: #888888;
+    .calendar-footer-left {
+      span {
+        margin-right: 1rem;
+        opacity: 0.8;
+      }
+      .calendar-total-income {
+        color: #219a95;
+      }
+      .calendar-total-expenditure {
+        color: #f45452;
+      }
+    }
   }
 }

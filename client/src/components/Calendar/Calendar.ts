@@ -2,6 +2,7 @@ import Component from '../../utils/Component';
 import { NUMBER_OF_DAYS_IN_WEEK } from '../../constants/days';
 import './calendar.scss';
 import { HistoryState } from '../../types';
+import formatPrice from '../../utils/formatPrice';
 interface CalendarDate {
   prevMonthLastDate: Date;
   thisMonthFirstDate: Date;
@@ -52,7 +53,7 @@ export default class Calendar extends Component {
         `<div
           class="${d % 7 === 0 ? 'calendar-sun' : ''} calendar-day prev-month"
         >
-          ${prevMonthLastDate.getDate() - thisMonthFirstDate.getDay() + d + 1}
+          <span>${prevMonthLastDate.getDate() - thisMonthFirstDate.getDay() + d + 1}</span>
         </div>`
       );
     }
@@ -60,17 +61,21 @@ export default class Calendar extends Component {
 
   pushNowDate(thisMonthFirstDate: Date, thisMonthLastDate: Date, array: Array<string>) {
     const today = new Date();
+    const isToday = today.getFullYear() === this.$state.year && today.getMonth() === (this.$state.month as number) - 1;
     for (let d = 0; d < thisMonthLastDate.getDate(); d++) {
       array.push(
         `<div
           class="
-            ${today.getDate() === d + 1 ? 'calendar-today' : ''}
+            ${isToday && today.getDate() === d + 1 ? 'calendar-today' : ''}
             ${(thisMonthFirstDate.getDay() + d) % 7 === 0 ? 'calendar-sun' : ''}
             ${(thisMonthFirstDate.getDay() + d) % 7 === 6 ? 'calendar-sat' : ''}
-            calendar-day prev-month
+            calendar-day now-month
           "
         >
-          ${d + 1}
+          <p class="calendar-income">${formatPrice(43112)}</p>
+          <p class="calendar-expenditure">${formatPrice(312341)}</p>
+          <p class="calendar-total">${formatPrice(271212)}</p>
+          <span>${d + 1}</span>
         </div>`
       );
     }
@@ -87,10 +92,10 @@ export default class Calendar extends Component {
           class="
             ${(nextMonthFirstDate.getDay() + d) % 7 === 0 ? 'calendar-sun' : ''}
             ${(nextMonthFirstDate.getDay() + d) % 7 === 6 ? 'calendar-sat' : ''}
-            calendar-day prev-month
+            calendar-day next-month
           "
         >
-          ${d + 1}
+          <span>${d + 1}</span>
         </div>`
       );
     }

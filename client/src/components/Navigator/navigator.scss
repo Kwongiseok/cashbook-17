@@ -3,13 +3,14 @@
   background-color: transparent;
   border: none;
   color: white;
-  width: 150px;
   font-size: 2rem;
+  cursor: pointer;
 }
 
 .header-navigator-date {
   color: white;
   display: flex;
+  width: 150px;
   flex-direction: column;
   align-items: center;
   h2 {
