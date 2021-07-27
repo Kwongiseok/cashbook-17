@@ -13,7 +13,7 @@ export default class MainPage extends Component {
   mounted() {}
 
   template(): string {
-    return `<div>${this.$state.year}</div>`;
+    return `<div>hi</div>`;
   }
 
   setEvent() {}

@@ -1,6 +1,7 @@
 type Subscription = {
   [key: string]: Array<Function>;
 };
+
 const Model = {
   subscriptions: {} as Subscription,
   /**

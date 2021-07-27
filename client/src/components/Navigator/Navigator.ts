@@ -1,17 +1,18 @@
 import Component from '../common/Component';
 import Model from '../../models/model';
-import { HistoryState } from 'types';
+import { HistoryState } from '../../types';
+import { trigger } from '../../utils/customEvent';
 
 export default class Navigator extends Component {
   $state: HistoryState;
   constructor($target: HTMLElement, state: HistoryState) {
     super($target, state);
     this.$state = state;
-    this.render();
     Model.subscribe('statechange', (data: HistoryState) => {
       const { month, year } = data;
       this.setState({ month, year });
     });
+    this.render();
   }
   setState(nextState: HistoryState): void {
     this.$state = { ...this.$state, ...nextState };
@@ -21,8 +22,8 @@ export default class Navigator extends Component {
     return `<div class="header-navigator-container">
       <button class="header-navigator-left">${'<'}</button>
       <div class="header-navigator-date">
-        <h2>${this.$state.month}</h2>
-        <span>${this.$state.year}</span>
+        <h2>${this.$state?.month}</h2>
+        <span>${this.$state?.year}</span>
       </div>
       <button class="header-navigator-right">${'>'}</button>
     </div>`;
@@ -35,13 +36,13 @@ export default class Navigator extends Component {
 
   onClickLeftButton(): void {
     this.$state.month === 1
-      ? Model.publish('statechange', { ...history.state, month: 12, year: (this.$state.year as number) - 1 })
-      : Model.publish('statechange', { ...history.state, month: (this.$state.month as number) - 1 });
+      ? trigger('statechange', { ...history.state, month: 12, year: (this.$state.year as number) - 1 })
+      : trigger('statechange', { ...history.state, month: (this.$state.month as number) - 1 });
   }
 
   onClickRightButton(): void {
     this.$state.month === 12
-      ? Model.publish('statechange', { ...history.state, month: 1, year: (this.$state.year as number) + 1 })
-      : Model.publish('statechange', { ...history.state, month: (this.$state.month as number) + 1 });
+      ? trigger('statechange', { ...history.state, month: 1, year: (this.$state.year as number) + 1 })
+      : trigger('statechange', { ...history.state, month: (this.$state.month as number) + 1 });
   }
 }

@@ -30,7 +30,7 @@ export default class Calendar extends Component {
 
   convertCalendarDaysToHTML(day: Date): string {
     const { prevMonthLastDate, thisMonthFirstDate, thisMonthLastDate, nextMonthFirstDate } = this.extractFromDate(day);
-    // return
+    return '';
   }
 
   extractFromDate(day: Date): CalendarDate {

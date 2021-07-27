@@ -1,7 +1,6 @@
 import MainPage from './views/MainPage/MainPage';
 import Header from './views/Header/Header';
 import Model from '../src/models/model';
-import Component from './components/common/Component';
 import CalendarPage from './views/CalendarPage/CalendarPage';
 import { listen } from '../src/utils/customEvent';
 
@@ -23,6 +22,7 @@ export default class Router {
   }
 
   popstateHandler() {
+    if (history.state === null) return;
     Model.publish('statechange', history.state);
   }
 }

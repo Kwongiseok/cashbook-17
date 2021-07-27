@@ -4,16 +4,13 @@ import Component from '../../components/common/Component';
 import './header.scss';
 import { CALENDAR_ICON_PATH } from '../../constants/imagePath';
 import Navigator from '../../components/Navigator/Navigator';
-import { HistoryState } from 'types';
+import { HistoryState } from '../../types';
 
 export default class Header extends Component {
   $state: HistoryState;
   constructor($target: HTMLElement, state: HistoryState) {
     super($target, state);
     this.$state = state;
-    Model.subscribe('statechange', (data: HistoryState) => {
-      this.render();
-    });
   }
 
   mounted() {
