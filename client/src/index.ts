@@ -1,20 +1,15 @@
 import Router from './router';
-import Header from './components/common/Header/Header';
-import ChartPage from './components/ChartPage/ChartPage';
-import { emit } from './utils/customEvent';
-import CalendarPage from './components/CalendarPage/CalendarPage';
-// import './index.scss';
+import Header from './views/Header/Header';
+import ChartPage from './views/ChartPage/ChartPage';
+import { trigger } from './utils/customEvent';
+import './index.scss';
+import MainPage from './views/MainPage/MainPage';
 
-const routes = {
-  '/': Header,
-  '/chart': ChartPage,
-  '/calendar': CalendarPage,
-};
+const $header: HTMLElement = document.getElementById('header') as HTMLElement;
+const $wrapper: HTMLElement = document.getElementById('wrapper') as HTMLElement;
+new Router($header, $wrapper);
 
-const $root: HTMLElement = document.getElementById('root') as HTMLElement;
-new Router($root, routes);
-
-emit(
+trigger(
   'statechange',
   history.state ?? {
     path: '/',
