@@ -1,5 +1,5 @@
-import Component from '../../common/Component';
-import { DAY_OF_THE_WEEK, NUMBER_OF_DAYS_IN_WEEK } from '../../../constants/days';
+import Component from '../common/Component';
+import { DAY_OF_THE_WEEK, NUMBER_OF_DAYS_IN_WEEK } from '../../constants/days';
 
 interface CalendarDate {
   prevMonthLastDate: Date;

@@ -31,10 +31,14 @@ module.exports = {
         },
       },
       {
-        test: /\.(png|jpe?g|gif|woff|woff2|ttf|svg|ico)$/i,
+        test: /\.(png|jpe?g|svg)$/,
         use: [
           {
             loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              outputPath: 'public/images/',
+            },
           },
         ],
       },

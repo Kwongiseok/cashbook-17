@@ -1,15 +1,47 @@
 import Component from '../common/Component';
-import Calendar from './Calendar/Calendar';
+import Model from '../../models/model';
+import { HistoryState } from 'types';
 
-class Navigator extends Component {
-  setup() {}
-
-    new Calendar($wrapper as HTMLElement, { year: 4, month: 5 });
+export default class Navigator extends Component {
+  $state: HistoryState;
+  constructor($target: HTMLElement, state: HistoryState) {
+    super($target, state);
+    this.$state = state;
+    this.render();
+    Model.subscribe('statechange', (data: HistoryState) => {
+      const { month, year } = data;
+      this.setState({ month, year });
+    });
   }
-
+  setState(nextState: HistoryState): void {
+    this.$state = { ...this.$state, ...nextState };
+    this.render();
+  }
   template(): string {
-    return '<div class="calendar-wrapper"></div>';
+    return `<div class="header-navigator-container">
+      <button class="header-navigator-left">${'<'}</button>
+      <div class="header-navigator-date">
+        <h2>${this.$state.month}</h2>
+        <span>${this.$state.year}</span>
+      </div>
+      <button class="header-navigator-right">${'>'}</button>
+    </div>`;
   }
 
-  setEvent() {}
+  setEvent(): void {
+    document.querySelector('.header-navigator-left')?.addEventListener('click', this.onClickLeftButton.bind(this));
+    document.querySelector('.header-navigator-right')?.addEventListener('click', this.onClickRightButton.bind(this));
+  }
+
+  onClickLeftButton(): void {
+    this.$state.month === 1
+      ? Model.publish('statechange', { ...history.state, month: 12, year: (this.$state.year as number) - 1 })
+      : Model.publish('statechange', { ...history.state, month: (this.$state.month as number) - 1 });
+  }
+
+  onClickRightButton(): void {
+    this.$state.month === 12
+      ? Model.publish('statechange', { ...history.state, month: 1, year: (this.$state.year as number) + 1 })
+      : Model.publish('statechange', { ...history.state, month: (this.$state.month as number) + 1 });
+  }
 }

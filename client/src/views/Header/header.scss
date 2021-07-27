@@ -1,4 +1,14 @@
 #header {
-  height: 200px;
-  background-color: gray;
+  box-sizing: border-box;
+  position: relative;
+  // height: 200px;
+  height: 13rem;
+  background-color: #2ac1bc;
+}
+
+.header-content-container {
+  display: flex;
+  width: 100%;
+  padding: 4rem 10rem;
+  justify-content: space-between;
 }

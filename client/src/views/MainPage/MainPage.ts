@@ -5,7 +5,6 @@ export default class MainPage extends Component {
   constructor($target: HTMLElement, state: Object) {
     super($target, state);
     Model.subscribe('statechange', (data: Object) => {
-      console.log(data);
       this.setState(data);
     });
   }
@@ -14,7 +13,7 @@ export default class MainPage extends Component {
   mounted() {}
 
   template(): string {
-    return `<div>${this.$state}</div>`;
+    return `<div>${this.$state.year}</div>`;
   }
 
   setEvent() {}
