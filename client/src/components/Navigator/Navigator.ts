@@ -1,4 +1,4 @@
-import Component from '../../../components/common/Component';
+import Component from '../common/Component';
 
 class Navigator extends Component {
   setup() {}
