@@ -1,6 +1,7 @@
 import Component from '../../utils/Component';
 import { NUMBER_OF_DAYS_IN_WEEK } from '../../constants/days';
-
+import './calendar.scss';
+import { HistoryState } from '../../types';
 interface CalendarDate {
   prevMonthLastDate: Date;
   thisMonthFirstDate: Date;
@@ -9,32 +10,33 @@ interface CalendarDate {
 }
 
 export default class Calendar extends Component {
-  setup() {}
-
-  mounted() {}
-
-  setEvent() {}
-
+  $state: HistoryState;
+  constructor($target: HTMLElement, state: HistoryState) {
+    super($target, state);
+    this.$state = state;
+  }
   template(): string {
-    return `
-      <div class="caledar-body">
-      ${this.convertCalendarDaysToHTML(new Date())}
-      </div>
+    const { year, month } = this.$state;
+    if (year && month)
+      return `
+      ${this.convertCalendarDaysToHTML(year, month - 1)}
     `;
+    return '';
   }
 
-  convertCalendarDaysToHTML(day: Date): string {
+  convertCalendarDaysToHTML(year: number, month: number): string {
     const calendarHTMLs: Array<string> = [];
-    const { prevMonthLastDate, thisMonthFirstDate, thisMonthLastDate, nextMonthFirstDate } = this.extractFromDate(day);
+    const { prevMonthLastDate, thisMonthFirstDate, thisMonthLastDate, nextMonthFirstDate } = this.extractFromDate(
+      year,
+      month
+    );
     this.pushPrevDate(prevMonthLastDate, thisMonthFirstDate, calendarHTMLs);
     this.pushNowDate(thisMonthFirstDate, thisMonthLastDate, calendarHTMLs);
     this.pushNextDate(nextMonthFirstDate, calendarHTMLs);
     return calendarHTMLs.join('');
   }
 
-  extractFromDate(day: Date): CalendarDate {
-    const month = day.getMonth();
-    const year = day.getFullYear();
+  extractFromDate(year: number, month: number): CalendarDate {
     return {
       prevMonthLastDate: new Date(year, month, 0),
       thisMonthFirstDate: new Date(year, month, 1),
@@ -73,6 +75,9 @@ export default class Calendar extends Component {
 
   pushNextDate(nextMonthFirstDate: Date, array: Array<string>) {
     let renderCount = 7 - (array.length % 7);
+    if (array.length + renderCount === 35) {
+      renderCount += 7;
+    }
     for (let d = 0; d < renderCount; d++) {
       array.push(
         `<div
@@ -87,4 +92,8 @@ export default class Calendar extends Component {
       );
     }
   }
+
+  mounted() {}
+
+  setEvent() {}
 }

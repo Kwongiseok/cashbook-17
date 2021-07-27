@@ -2,6 +2,7 @@ import Model from '../../models/model';
 import Component from '../../utils/Component';
 import { DAY_OF_THE_WEEK } from '../../constants/days';
 import Calendar from '../../components/Calendar/Calendar';
+import './calendarView.scss';
 
 export default class CalendarView extends Component {
   constructor($target: HTMLElement, state: Object) {
