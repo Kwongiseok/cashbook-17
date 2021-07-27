@@ -1,4 +1,4 @@
-import Component from '../common/Component';
+import Component from '../../utils/Component';
 import Model from '../../models/model';
 import { HistoryState } from '../../types';
 import { trigger } from '../../utils/customEvent';

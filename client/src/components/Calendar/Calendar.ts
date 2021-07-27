@@ -1,5 +1,5 @@
-import Component from '../common/Component';
-import { DAY_OF_THE_WEEK, NUMBER_OF_DAYS_IN_WEEK } from '../../constants/days';
+import Component from '../../utils/Component';
+import { NUMBER_OF_DAYS_IN_WEEK } from '../../constants/days';
 
 interface CalendarDate {
   prevMonthLastDate: Date;
@@ -16,16 +16,10 @@ export default class Calendar extends Component {
   setEvent() {}
 
   template(): string {
-    return `<ul class="calendar-header">
-      ${this.convertDayOfTheWeekToHTML()}
+    return `
       <div class="caledar-body">
-
       </div>
-    </ul>`;
-  }
-
-  convertDayOfTheWeekToHTML(): string {
-    return DAY_OF_THE_WEEK.map((day) => `<li class="calendar-header-day">${day}</li>`).join('');
+    `;
   }
 
   convertCalendarDaysToHTML(day: Date): string {
