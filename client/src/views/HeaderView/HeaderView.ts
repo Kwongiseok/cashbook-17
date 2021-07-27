@@ -28,9 +28,13 @@ export default class HeaderView extends Component {
   }
 
   setEvent() {
+    const $homeButton = document.querySelector('.header-home');
     const $docsButton = document.querySelector('.header-docs');
     const $calendarButton = document.querySelector('.header-calendar');
     const $chartButton = document.querySelector('.header-chart');
+    $homeButton?.addEventListener('click', () => {
+      trigger('statechange', { ...history.state, path: '/' });
+    });
     $docsButton?.addEventListener('click', () => {
       trigger('statechange', { ...history.state, path: '/' });
     });

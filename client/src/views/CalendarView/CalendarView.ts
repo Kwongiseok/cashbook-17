@@ -1,6 +1,7 @@
 import Model from '../../models/model';
 import Component from '../../utils/Component';
 import { DAY_OF_THE_WEEK } from '../../constants/days';
+import Calendar from '../../components/Calendar/Calendar';
 
 export default class CalendarView extends Component {
   constructor($target: HTMLElement, state: Object) {
@@ -12,13 +13,16 @@ export default class CalendarView extends Component {
   }
   setup() {}
 
-  mounted() {}
+  mounted(): void {
+    new Calendar(document.querySelector('.calendar-body') as HTMLElement, this.$state);
+  }
 
   template(): string {
     return `<div class="calendar-container">
     <ul class="calendar-header">
       ${this.convertDayOfTheWeekToHTML()}
     </ul>
+    <div class="calendar-body"></div>
     </div>`;
   }
 
