@@ -21,9 +21,11 @@ export default class HeaderView extends Component {
     return `<div class="header-content-container">
       <button class="header-home">우아한 가계부</button>
       <div class="header-navigator-wrapper"></div>
-      <button class="header-button header-docs"><img class="header-Icon" src="${CALENDAR_ICON_PATH}"/></button>
-      <button class="header-button header-calendar"><img class="header-Icon" src="${CALENDAR_ICON_PATH}"/></button>
-      <button class="header-button header-chart"><img class="header-Icon" src="${CALENDAR_ICON_PATH}"/></button>
+      <div class="header-icon-container">
+        <button class="header-button header-docs"><img class="header-Icon" src="${CALENDAR_ICON_PATH}"/></button>
+        <button class="header-button header-calendar">달력<img class="header-Icon" src="${CALENDAR_ICON_PATH}"/></button>
+        <button class="header-button header-chart"><img class="header-Icon" src="${CALENDAR_ICON_PATH}"/></button>
+      </div>
     </div>`;
   }
 

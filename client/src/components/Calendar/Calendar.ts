@@ -16,11 +16,12 @@ export default class Calendar extends Component {
     this.$state = state;
   }
   template(): string {
-    const { year, month } = this.$state;
-    if (year && month)
+    if (this.$state) {
+      const { year, month } = this.$state as HistoryState;
       return `
-      ${this.convertCalendarDaysToHTML(year, month - 1)}
+      ${this.convertCalendarDaysToHTML(year as number, (month as number) - 1)}
     `;
+    }
     return '';
   }
 
@@ -58,10 +59,12 @@ export default class Calendar extends Component {
   }
 
   pushNowDate(thisMonthFirstDate: Date, thisMonthLastDate: Date, array: Array<string>) {
+    const today = new Date();
     for (let d = 0; d < thisMonthLastDate.getDate(); d++) {
       array.push(
         `<div
           class="
+            ${today.getDate() === d + 1 ? 'calendar-today' : ''}
             ${(thisMonthFirstDate.getDay() + d) % 7 === 0 ? 'calendar-sun' : ''}
             ${(thisMonthFirstDate.getDay() + d) % 7 === 6 ? 'calendar-sat' : ''}
             calendar-day prev-month
