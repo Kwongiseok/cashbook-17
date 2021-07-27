@@ -1,6 +1,6 @@
 import Router from './router';
 import { trigger } from './utils/customEvent';
-import './styles/index.css';
+import './styles/index.scss';
 
 const $header: HTMLElement = document.getElementById('header') as HTMLElement;
 const $wrapper: HTMLElement = document.getElementById('wrapper') as HTMLElement;
