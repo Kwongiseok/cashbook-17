@@ -1,6 +1,11 @@
+// interface DateState {
+//   year: number;
+//   month: number;
+// }
+
 export default class Component {
   $target: HTMLElement;
-  $state: Object = {};
+  $state: Object;
   constructor($target: HTMLElement, state: Object) {
     this.$target = $target;
     this.$state = state;

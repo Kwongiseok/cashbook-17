@@ -1,5 +1,8 @@
 @import './reset.scss';
 
+* {
+  box-sizing: border-boxs;
+}
 #root {
   margin: auto;
 }

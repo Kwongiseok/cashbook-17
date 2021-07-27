@@ -1,6 +1,7 @@
 type Subscription = {
   [key: string]: Array<Function>;
 };
+
 const Model = {
   subscriptions: {} as Subscription,
   /**
@@ -17,7 +18,6 @@ const Model = {
 
   publish(event: string, data?: object): void {
     const events = this.subscriptions[event];
-    console.log(events);
     events.forEach((cb) => cb(data));
   },
   /**
@@ -32,7 +32,6 @@ const Model = {
    * - event.subscribe('event.namespaced', function (data) { ... });
    */
   subscribe(event: string, callback: Function): void {
-    console.log(event);
     if (this.subscriptions[event]) {
       this.subscriptions[event].push(callback);
     } else {

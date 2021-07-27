@@ -1,11 +1,10 @@
-import Component from '../../components/common/Component';
+import Component from '../../utils/Component';
 import Model from '../../models/model';
 
-export default class MainPage extends Component {
+export default class MainView extends Component {
   constructor($target: HTMLElement, state: Object) {
     super($target, state);
     Model.subscribe('statechange', (data: Object) => {
-      console.log(data);
       this.setState(data);
     });
   }
@@ -14,7 +13,7 @@ export default class MainPage extends Component {
   mounted() {}
 
   template(): string {
-    return `<div>${this.$state}</div>`;
+    return `<div>hi</div>`;
   }
 
   setEvent() {}
