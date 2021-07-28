@@ -19,10 +19,23 @@ export default class BarChart extends Component {
     super($target, state);
     this.$state = state;
   }
+
+  setEvent(): void {
+    const $container = document.querySelector('.bar-container') as HTMLElement;
+    $container.addEventListener('click', (e: Event) => {
+      const target = e.target as HTMLElement;
+      const el = target.closest('.bar-expenditure-container') as HTMLElement;
+      if (el && el.dataset.category) {
+        // TODO: 추후에 date 받아서 입력할 년월일 계산하여 적용
+        console.log(this.$state.year, this.$state.month, el.dataset.category);
+      }
+    });
+  }
+
   mounted(): void {
     const $container = document.querySelector('.bar-container') as HTMLElement;
     $container.innerHTML = this.makeBarGraph(dummy);
-    const $barAll = document.querySelectorAll('.bar-percent');
+    const $barAll = [...Array.from(document.querySelectorAll('.bar-percent'))] as Array<HTMLElement>;
     $barAll.forEach(($bar, i) => {
       setTimeout(() => {
         $bar.style.width = `${$bar.dataset.percent}%`;
@@ -45,7 +58,7 @@ export default class BarChart extends Component {
 
   convertToBarHTML(data: ExpenditureData): string {
     return `
-    <div class="bar-expenditure-container">
+    <div class="bar-expenditure-container" data-category=${data.category}>
       <div class="bar-expenditure-left">
         <div class="bar-category" style="background-color:${EXPENDITURE_CATEGORY[data.category]}">${data.category}</div>
         <div class="bar-percent-text-container">${data.percent}%</div>
