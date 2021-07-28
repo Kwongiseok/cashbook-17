@@ -14,7 +14,7 @@ export default class HeaderView extends Component {
     this.$state = state;
   }
 
-  mounted() {
+  mounted(): void {
     const navigator = new Navigator(document.querySelector('.header-navigator-wrapper') as HTMLElement, this.$state);
   }
 
@@ -23,29 +23,58 @@ export default class HeaderView extends Component {
       <button class="header-home">우아한 가계부</button>
       <div class="header-navigator-wrapper"></div>
       <div class="header-icon-container">
-        <button class="header-button header-docs"><img class="header-Icon" src="${DOCS_ICON_PATH}"/></button>
-        <button class="header-button header-calendar"><img class="header-Icon" src="${CALENDAR_ICON_PATH}"/></button>
-        <button class="header-button header-chart"><img class="header-Icon" src="${CHART_ICON_PATH}"/></button>
+        <button class="header-button header-docs"><img class="header-icon docs-icon" src="${DOCS_ICON_PATH}"/></button>
+        <button class="header-button header-calendar"><img class="header-icon calendar-icon" src="${CALENDAR_ICON_PATH}"/></button>
+        <button class="header-button header-chart"><img class="header-icon chart-icon" src="${CHART_ICON_PATH}"/></button>
       </div>
     </div>`;
   }
 
-  setEvent() {
-    const $homeButton = document.querySelector('.header-home');
-    const $docsButton = document.querySelector('.header-docs');
-    const $calendarButton = document.querySelector('.header-calendar');
-    const $chartButton = document.querySelector('.header-chart');
-    $homeButton?.addEventListener('click', () => {
+  setEvent(): void {
+    const $homeButton = document.querySelector('.header-home') as HTMLElement;
+    const $docsButton = document.querySelector('.header-docs') as HTMLElement;
+    const $calendarButton = document.querySelector('.header-calendar') as HTMLElement;
+    const $chartButton = document.querySelector('.header-chart') as HTMLElement;
+    $docsButton.classList.add('icon-clicked');
+
+    $homeButton.addEventListener('click', () => {
       trigger('statechange', { ...history.state, path: '/' });
+      this.resetButtonClickedClass();
+      $docsButton.classList.add('icon-clicked');
     });
-    $docsButton?.addEventListener('click', () => {
+    $docsButton.addEventListener('click', () => {
       trigger('statechange', { ...history.state, path: '/' });
+      this.resetButtonClickedClass();
+      $docsButton.classList.add('icon-clicked');
     });
-    $calendarButton?.addEventListener('click', () => {
+    $calendarButton.addEventListener('click', () => {
       trigger('statechange', { ...history.state, path: '/calendar' });
+      this.resetButtonClickedClass();
+      $calendarButton.classList.add('icon-clicked');
     });
-    $chartButton?.addEventListener('click', () => {
+    $chartButton.addEventListener('click', () => {
       trigger('statechange', { ...history.state, path: '/chart' });
+      this.resetButtonClickedClass();
+      $chartButton.classList.add('icon-clicked');
     });
+  }
+
+  resetButtonClickedClass() {
+    const elements = document.querySelectorAll('.header-button');
+    elements.forEach((el) => el.classList.remove('icon-clicked'));
+  }
+
+  handleIconWhenPopState(path: string) {
+    const $docsButton = document.querySelector('.header-docs') as HTMLElement;
+    const $calendarButton = document.querySelector('.header-calendar') as HTMLElement;
+    const $chartButton = document.querySelector('.header-chart') as HTMLElement;
+    this.resetButtonClickedClass();
+    if (path === '/') {
+      $docsButton.classList.add('icon-clicked');
+    } else if (path === '/calendar') {
+      $calendarButton.classList.add('icon-clicked');
+    } else if (path === '/chart') {
+      $chartButton.classList.add('icon-clicked');
+    }
   }
 }

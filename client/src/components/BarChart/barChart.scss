@@ -1,10 +1,11 @@
 .bar-total-expenditure {
   height: 15%;
+  text-align: center;
+  font-size: 1.2rem;
 }
 .bar-container {
   display: flex;
   flex-direction: column;
-  // justify-content: space-a;
   height: 85%;
 }
 .bar-expenditure-container {

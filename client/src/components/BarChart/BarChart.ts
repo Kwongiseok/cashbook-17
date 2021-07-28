@@ -31,7 +31,7 @@ export default class BarChart extends Component {
   }
   template(): string {
     return `
-    <div class="bar-total-expenditure">총 금액 : 15823123</div>
+    <div class="bar-total-expenditure">이번 달 지출 금액 : ${'834,640'}</div>
     <div class="bar-container"></div>`;
   }
 
