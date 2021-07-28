@@ -6,12 +6,16 @@ import { HistoryState } from '../../types';
 import CALENDAR_ICON_PATH from '../../../public/images/calendarIcon.svg';
 import CHART_ICON_PATH from '../../../public/images/chartIcon.svg';
 import DOCS_ICON_PATH from '../../../public/images/docsIcon.svg';
+import Model from '../../models/model';
 
 export default class HeaderView extends Component {
   $state: HistoryState;
   constructor($target: HTMLElement, state: HistoryState) {
     super($target, state);
     this.$state = state;
+    Model.subscribe('statechange', () => {
+      this.handleIconWhenPopState(history.state.path);
+    });
   }
 
   mounted(): void {
