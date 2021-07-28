@@ -1,8 +1,6 @@
 import { EXPENDITURE_CATEGORY } from '../../constants/category';
-import { HistoryState } from '../../types';
+import { ExpenditureData, HistoryState } from '../../types';
 import Component from '../../utils/Component';
-
-type ExpenditureData = Array<{ category: string; percent: number; total: number }>;
 
 const dummy = [
   { category: '생활', percent: 64, total: 536460 },
@@ -21,16 +19,16 @@ export default class DonutChart extends Component {
     this.$state = state;
   }
   mounted(): void {
-    const $container = document.querySelector('.donutChart-container');
+    const $container = document.querySelector('.donut-container');
     const $svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     $svg.setAttribute('width', '80%');
     $svg.setAttribute('height', '80%');
     $svg.setAttribute('viewBox', '0 0 100 100');
-    $container?.appendChild($svg);
     this.appendCircle($svg, dummy);
+    $container?.appendChild($svg);
   }
   template(): string {
-    return '<div class="donutChart-container"></div>';
+    return '<div class="donut-container"></div>';
   }
 
   appendCircle($svg: SVGSVGElement, data: ExpenditureData): void {

@@ -1,3 +1,4 @@
+import BarChart from '../../components/BarChart/BarChart';
 import DonutChart from '../../components/DonutChart/DonutChart';
 import Model from '../../models/model';
 import Component from '../../utils/Component';
@@ -12,11 +13,17 @@ export default class ChartView extends Component {
   }
 
   mounted(): void {
-    new DonutChart(document.querySelector('.chart-container') as HTMLElement, this.$state);
+    new DonutChart(document.querySelector('.donut-chart-container') as HTMLElement, this.$state);
+    // new BarChart(document.querySelector('.bar-chart-container') as HTMLElement, this.$state);
   }
 
   template(): string {
-    return `<div class="chart-container">
+    if (this.$state) {
+      return `<div class="main-chart-container">
+      <div class="donut-chart-container">
+      <div class="bar-chart-container">
     </div>`;
+    }
+    return '';
   }
 }
