@@ -12,11 +12,13 @@ export default class ChartView extends Component {
   }
 
   mounted(): void {
-    new DonutChart(document.querySelector('.chart-container') as HTMLElement, this.$state);
+    const $donutChart = document.querySelector('.donut-chart-container');
+    new DonutChart($donutChart as HTMLElement, this.$state);
   }
 
   template(): string {
-    return `<div class="chart-container">
+    return `<div class="main-chart-container">
+      <div class="donut-chart-container"></div>
     </div>`;
   }
 }
