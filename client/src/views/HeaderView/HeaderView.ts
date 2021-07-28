@@ -1,4 +1,3 @@
-import Model from '../../models/model';
 import { trigger } from '../../utils/customEvent';
 import Component from '../../utils/Component';
 import './header.scss';
