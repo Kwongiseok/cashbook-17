@@ -33,7 +33,7 @@ export default class DonutChart extends Component {
   }
 
   appendCircle($svg: SVGSVGElement, data: ExpenditureDataList): void {
-    const [startAngle, radius, cx, cy, strokeWidth, animationDuration] = [-90, 30, '50', '50', '10', 400];
+    const [startAngle, radius, cx, cy, strokeWidth, animationDuration] = [-90, 30, '50', '50', '10', 700];
     const dashArray = 2 * Math.PI * radius;
     let filled = 0;
     data.forEach((item) => {
