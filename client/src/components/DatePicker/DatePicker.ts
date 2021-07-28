@@ -24,9 +24,15 @@ export default class DatePicker extends Component {
     const $body = document.querySelector('.datePicker-body') as HTMLElement;
     $leftButton.addEventListener('click', this.onClickLeft.bind(this));
     $rightButton.addEventListener('click', this.onClickRight.bind(this));
-    $body.addEventListener('click', (e : Event) => {
-      if(e.target.closest('.now'))
-    })
+    $body.addEventListener('click', (e: Event) => {
+      const target = e.target as HTMLElement;
+      const el = target.closest('.now-month') as HTMLElement;
+      if (el && el.dataset.date) {
+        // TODO: 추후에 date 받아서 입력할 년월일 계산하여 적용
+        console.log(this.$state.year, this.$state.month, el.dataset.date);
+      }
+      return;
+    });
   }
 
   template(): string {
