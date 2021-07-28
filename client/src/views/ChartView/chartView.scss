@@ -1,0 +1,26 @@
+.chart-container {
+  display: flex;
+  width: 70%;
+  height: 90%;
+  margin: auto;
+  position: relative;
+}
+.main-chart-container {
+  display: flex;
+  width: 100%;
+  margin: auto;
+  position: absolute;
+  background-color: #fff;
+  height: 70%;
+  top: -2rem;
+}
+
+.donut-chart-container {
+  width: 50%;
+  height: 100%;
+}
+
+.bar-chart-container {
+  width: 50%;
+  height: 100%;
+}

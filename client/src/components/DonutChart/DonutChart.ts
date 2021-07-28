@@ -1,5 +1,5 @@
 import { EXPENDITURE_CATEGORY } from '../../constants/category';
-import { ExpenditureData, HistoryState } from '../../types';
+import { ExpenditureDataList, HistoryState } from '../../types';
 import Component from '../../utils/Component';
 
 const dummy = [
@@ -21,8 +21,8 @@ export default class DonutChart extends Component {
   mounted(): void {
     const $container = document.querySelector('.donut-container');
     const $svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    $svg.setAttribute('width', '80%');
-    $svg.setAttribute('height', '80%');
+    $svg.setAttribute('width', '100%');
+    $svg.setAttribute('height', '100%');
     $svg.setAttribute('viewBox', '0 0 100 100');
     this.appendCircle($svg, dummy);
     $container?.appendChild($svg);
@@ -31,7 +31,7 @@ export default class DonutChart extends Component {
     return '<div class="donut-container"></div>';
   }
 
-  appendCircle($svg: SVGSVGElement, data: ExpenditureData): void {
+  appendCircle($svg: SVGSVGElement, data: ExpenditureDataList): void {
     const [startAngle, radius, cx, cy, strokeWidth, animationDuration] = [-90, 20, '40', '40', '10', 400];
     const dashArray = 2 * Math.PI * radius;
     let filled = 0;
