@@ -2,6 +2,7 @@ import Component from '../../utils/Component';
 import Model from '../../models/model';
 import { HistoryState } from '../../types';
 import { trigger } from '../../utils/customEvent';
+import './navigator.scss';
 
 export default class Navigator extends Component {
   $state: HistoryState;
@@ -19,14 +20,14 @@ export default class Navigator extends Component {
     this.render();
   }
   template(): string {
-    return `<div class="header-navigator-container">
+    return `
       <button class="header-navigator-left">${'<'}</button>
       <div class="header-navigator-date">
-        <h2>${this.$state?.month}</h2>
-        <span>${this.$state?.year}</span>
+        <h2 class="header-navigator-month">${this.$state?.month}월</h2>
+        <span class="header-navigator-year">${this.$state?.year}</span>
       </div>
       <button class="header-navigator-right">${'>'}</button>
-    </div>`;
+    `;
   }
 
   setEvent(): void {
