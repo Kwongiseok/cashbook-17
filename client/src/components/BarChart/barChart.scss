@@ -1,8 +1,9 @@
 .bar-total-expenditure {
   display: flex;
   text-align: center;
-  font-weight: 800;
+  font-weight: 700;
   color: #f45452;
+  font-size: 20px;
 }
 .bar-total-expenditure-title {
   color: #2ac1bc;
@@ -81,11 +82,12 @@
   position: absolute;
   overflow: hidden;
   transform-style: preserve-3d;
+  opacity: 0.9;
   animation: rotate1;
 }
 
 @keyframes rotate1 {
   100% {
-    margin-top: 10rem;
+    margin-top: 10em;
   }
 }
