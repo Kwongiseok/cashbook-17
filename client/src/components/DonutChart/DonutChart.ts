@@ -1,6 +1,7 @@
 import { EXPENDITURE_CATEGORY } from '../../constants/category';
 import { ExpenditureDataList, HistoryState } from '../../types';
 import Component from '../../utils/Component';
+import './donutChart.scss';
 
 const dummy = [
   { category: '생활', percent: 64, total: 536460 },
@@ -32,7 +33,7 @@ export default class DonutChart extends Component {
   }
 
   appendCircle($svg: SVGSVGElement, data: ExpenditureDataList): void {
-    const [startAngle, radius, cx, cy, strokeWidth, animationDuration] = [-90, 20, '40', '40', '10', 400];
+    const [startAngle, radius, cx, cy, strokeWidth, animationDuration] = [-90, 30, '50', '50', '10', 400];
     const dashArray = 2 * Math.PI * radius;
     let filled = 0;
     data.forEach((item) => {

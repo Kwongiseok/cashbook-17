@@ -1,7 +1,7 @@
 import { EXPENDITURE_CATEGORY } from '../../constants/category';
 import { ExpenditureData, ExpenditureDataList, HistoryState } from '../../types';
 import Component from '../../utils/Component';
-import './barchart.scss';
+import './barChart.scss';
 
 const dummy = [
   { category: '생활', percent: 64, total: 536460 },
@@ -22,9 +22,17 @@ export default class BarChart extends Component {
   mounted(): void {
     const $container = document.querySelector('.bar-container') as HTMLElement;
     $container.innerHTML = this.makeBarGraph(dummy);
+    const $barAll = document.querySelectorAll('.bar-percent');
+    $barAll.forEach(($bar, i) => {
+      setTimeout(() => {
+        $bar.style.width = `${$bar.dataset.percent}%`;
+      }, i * 50);
+    });
   }
   template(): string {
-    return '<div class="bar-container"></div>';
+    return `
+    <div class="bar-total-expenditure">총 금액 : 15823123</div>
+    <div class="bar-container"></div>`;
   }
 
   makeBarGraph(data: ExpenditureDataList): string {
@@ -39,9 +47,14 @@ export default class BarChart extends Component {
     return `
     <div class="bar-expenditure-container">
       <div class="bar-expenditure-left">
-        <div class="bar-category" style="color:${EXPENDITURE_CATEGORY[data.category]}">${data.category}</div>
-        <div class="bar-percent-text">${data.percent}%</div>
-        <div class="bar-percent"></div>
+        <div class="bar-category" style="background-color:${EXPENDITURE_CATEGORY[data.category]}">${data.category}</div>
+        <div class="bar-percent-text-container">${data.percent}%</div>
+        <div class="bar-percent-container">
+          <div class="bar-percent" 
+              style="background-color:${EXPENDITURE_CATEGORY[data.category]}" 
+              data-percent=${data.percent}>
+          </div>
+        </div>
       </div>
       <div class="bar-expenditure-right">${data.total}</div>
     </div>`;
