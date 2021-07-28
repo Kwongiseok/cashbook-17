@@ -1,14 +1,7 @@
 import Component from '../../utils/Component';
-import { NUMBER_OF_DAYS_IN_WEEK } from '../../constants/days';
 import './calendar.scss';
-import { HistoryState } from '../../types';
+import { CalendarDate, HistoryState } from '../../types';
 import formatPrice from '../../utils/formatPrice';
-interface CalendarDate {
-  prevMonthLastDate: Date;
-  thisMonthFirstDate: Date;
-  thisMonthLastDate: Date;
-  nextMonthFirstDate: Date;
-}
 
 export default class Calendar extends Component {
   $state: HistoryState;
