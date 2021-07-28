@@ -4,3 +4,6 @@ export type HistoryState = {
   month?: number;
   type?: string;
 };
+export type ExpenditureCategoryType = {
+  [key: string]: string;
+};

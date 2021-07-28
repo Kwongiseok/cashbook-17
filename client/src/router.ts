@@ -3,6 +3,7 @@ import HeaderView from './views/HeaderView/HeaderView';
 import Model from '../src/models/model';
 import CalendarView from './views/CalendarView/CalendarView';
 import { listen } from '../src/utils/customEvent';
+import ChartView from './views/ChartView/ChartView';
 
 export default class Router {
   $wrapper: HTMLElement;
@@ -11,6 +12,7 @@ export default class Router {
     new HeaderView($header, history.state);
     new MainView($wrapper, history.state);
     new CalendarView($wrapper, history.state);
+    new ChartView($wrapper, history.state);
 
     listen('statechange', this.stateChangeHandler.bind(this) as EventListener);
     window.addEventListener('popstate', this.popstateHandler.bind(this));
