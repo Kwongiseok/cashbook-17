@@ -54,7 +54,7 @@ export default class DonutChart extends Component {
       filled += item.percent;
       $svg.appendChild(circle);
       setTimeout(() => {
-        circle.style['stroke-dashoffset'] = dashOffset;
+        circle.setAttribute('stroke-dashoffset', String(dashOffset));
       }, 100);
     });
   }
