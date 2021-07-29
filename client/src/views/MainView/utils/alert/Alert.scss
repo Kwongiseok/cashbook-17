@@ -1,0 +1,48 @@
+.alert-background {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: #00000066;
+
+  > .alert {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 400px;
+    background-color: #fcfcfc;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1), 0px 4px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 40px;
+
+    > .message {
+      font-size: 18px;
+      font-weight: 400;
+      > span {
+        color: #f45452;
+      }
+    }
+    > .buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 50px;
+
+      > button {
+        border: none;
+        outline: none;
+        background-color: unset;
+        cursor: pointer;
+        font-size: 18px;
+        font-weight: 500;
+
+        &.btn-ok {
+          color: #f45452;
+        }
+      }
+    }
+  }
+}
