@@ -9,11 +9,18 @@ export default class AuthController {
   }
 
   configureRoutes() {
-    this.router.get('/', this.post);
+    this.router.get('/github', this.getOAuthGitHub.bind(this));
+    this.router.get('/github/callback', this.getOAuthGitHubCb.bind(this));
     return this.router;
   }
 
-  post(req, res, next) {
-    res.status(200).json('asdasda');
+  getOAuthGitHub(req, res) {
+    res.redirect(
+      `https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_CLIENT_ID}&redirect_uri=${process.env.GITHUB_CALLBACK_URL}`
+    );
+  }
+
+  getOAuthGitHubCb(req, res) {
+    authService.signInGithub(req, res);
   }
 }
