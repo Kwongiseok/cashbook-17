@@ -9,10 +9,10 @@ export default class Router {
   $wrapper: HTMLElement;
   constructor($header: HTMLElement, $wrapper: HTMLElement) {
     this.$wrapper = $wrapper;
-    new HeaderView($header, history.state);
-    new MainView($wrapper, history.state);
-    new CalendarView($wrapper, history.state);
-    new ChartView($wrapper, history.state);
+    new HeaderView($header, {});
+    new MainView($wrapper, {});
+    new CalendarView($wrapper, {});
+    new ChartView($wrapper, {});
 
     listen('statechange', this.stateChangeHandler.bind(this) as EventListener);
     window.addEventListener('popstate', this.popstateHandler.bind(this));

@@ -7,3 +7,6 @@ export type HistoryState = {
 export type ExpenditureCategoryType = {
   [key: string]: string;
 };
+
+export type ExpenditureData = { category: string; percent: number; total: number };
+export type ExpenditureDataList = Array<ExpenditureData>;

@@ -1,0 +1,56 @@
+.bar-total-expenditure {
+  height: 15%;
+  text-align: center;
+  font-size: 1.2rem;
+}
+.bar-container {
+  display: flex;
+  flex-direction: column;
+  height: 85%;
+}
+.bar-expenditure-container {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.4rem;
+}
+
+.bar-expenditure-left {
+  display: flex;
+  flex-direction: row;
+}
+
+.bar-expenditure-left {
+  width: 80%;
+}
+
+.bar-category {
+  width: 30%;
+  color: #fff;
+  text-align: center;
+  font-size: 0.9rem;
+  line-height: 1.5rem;
+  height: 1.4rem;
+  border-radius: 12px;
+  margin-right: 1.2rem;
+}
+
+.bar-percent-text-container {
+  display: flex;
+  width: 10%;
+  align-items: center;
+  line-height: 1.5rem;
+  margin-right: 1.2rem;
+}
+
+.bar-percent-container {
+  width: calc(60% - 2.4rem);
+  border-radius: 6px;
+}
+.bar-percent {
+  height: 100%;
+  width: 0;
+  transition: width 600ms;
+  border-radius: 6px;
+}

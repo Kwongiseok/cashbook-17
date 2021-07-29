@@ -1,8 +1,7 @@
 import { EXPENDITURE_CATEGORY } from '../../constants/category';
-import { HistoryState } from '../../types';
+import { ExpenditureDataList, HistoryState } from '../../types';
 import Component from '../../utils/Component';
-
-type ExpenditureData = Array<{ category: string; percent: number; total: number }>;
+import './donutChart.scss';
 
 const dummy = [
   { category: '생활', percent: 64, total: 536460 },
@@ -21,26 +20,28 @@ export default class DonutChart extends Component {
     this.$state = state;
   }
   mounted(): void {
-    const $container = document.querySelector('.donutChart-container');
+    const $container = document.querySelector('.donut-container');
     const $svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    $svg.setAttribute('width', '80%');
-    $svg.setAttribute('height', '80%');
+    $svg.setAttribute('width', '100%');
+    $svg.setAttribute('height', '100%');
     $svg.setAttribute('viewBox', '0 0 100 100');
     this.appendCircle($svg, dummy);
     $container?.appendChild($svg);
   }
   template(): string {
-    return '<div class="donutChart-container"></div>';
+    return '<div class="donut-container"></div>';
   }
 
-  appendCircle($svg: SVGSVGElement, data: ExpenditureData): void {
-    const [startAngle, radius, cx, cy, strokeWidth] = [-90, 20, '40', '40', '15'];
+  appendCircle($svg: SVGSVGElement, data: ExpenditureDataList): void {
+    const [startAngle, radius, cx, cy, strokeWidth, animationDuration] = [-90, 30, '50', '50', '10', 400];
     const dashArray = 2 * Math.PI * radius;
     let filled = 0;
     data.forEach((item) => {
       const dashOffset = dashArray - (dashArray * item.percent) / 100;
       const angle = (filled * 360) / 100 + startAngle;
       const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      const currentDuration = (animationDuration * item.percent) / 100;
+      const delay = (animationDuration * filled) / 100;
       circle.setAttribute('r', String(radius));
       circle.setAttribute('cx', cx);
       circle.setAttribute('cy', cy);
@@ -48,10 +49,14 @@ export default class DonutChart extends Component {
       circle.setAttribute('stroke', EXPENDITURE_CATEGORY[item.category]);
       circle.setAttribute('stroke-width', strokeWidth);
       circle.setAttribute('stroke-dasharray', String(dashArray));
-      circle.setAttribute('stroke-dashoffset', String(dashOffset));
+      circle.setAttribute('stroke-dashoffset', String(dashArray));
       circle.setAttribute('transform', 'rotate(' + angle + ' ' + cx + ' ' + cy + ')');
+      circle.style.transition = 'stroke-dashoffset ' + currentDuration + 'ms linear ' + delay + 'ms';
       filled += item.percent;
       $svg.appendChild(circle);
+      setTimeout(() => {
+        circle.setAttribute('stroke-dashoffset', String(dashOffset));
+      }, 100);
     });
   }
 }
