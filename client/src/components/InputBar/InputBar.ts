@@ -3,10 +3,9 @@ import ArrowIcon from '../../../public/images/arrow-down.svg';
 import DeleteIcon from '../../../public/images/deleteIcon.svg';
 import './inputBar.scss';
 import { CashbookType, CATEGORY, CATEGORY_TYPE, HistoryState } from '../../types';
-import alert from '../../views/MainView/utils/alert/Alert';
-import confirm from '../../views/MainView/utils/confirm/Confirm';
+import confirm from '../../utils/confirm/Confirm';
 import { listenByElement } from '../../utils/customEvent';
-import Alert from '../../views/MainView/utils/alert/Alert';
+import Alert from '../../utils/alert/Alert';
 import DatePicker from '../../components/DatePicker/DatePicker';
 
 let dummyPayment = ['신한카드', '계좌이체', '현금'];
@@ -284,7 +283,7 @@ export default class InputBar extends Component<InputType> {
 
   async deletePayment(e: MouseEvent, payment: string) {
     e.stopPropagation();
-    const result = await alert(`결제수단 <span>${payment}</span>를 삭제 하시겠습니다?`);
+    const result = await Alert(`결제수단 <span>${payment}</span>를 삭제 하시겠습니다?`);
     if (result) {
       const $paymentDropdown = this.$target.querySelector('.input-bar__payment .input-dropdown') as HTMLElement;
       const $item = $paymentDropdown.querySelector(`[data-value="${payment}"]`) as HTMLElement;
