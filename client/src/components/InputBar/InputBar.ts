@@ -268,7 +268,7 @@ export default class InputBar extends Component<InputType> {
     });
     const $addButton = document.createElement('li');
     $addButton.innerText = '추가하기';
-    $addButton.addEventListener('click', () => this.addPayment());
+    $addButton.addEventListener('click', this.addPayment);
     $paymentDropdown?.appendChild($addButton);
   }
 
