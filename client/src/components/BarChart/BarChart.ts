@@ -62,7 +62,9 @@ export default class BarChart extends Component {
     <div class="bar-expenditure-container" data-category=${data.category}>
       <div class="bar-expenditure-left">
         <div class="bar-category" style="background-color:${EXPENDITURE_CATEGORY[data.category]}">${data.category}</div>
-        <div class="bar-percent-text-container">${data.percent}%</div>
+        <div class="bar-percent-text-container">
+          ${this.makeRollingNumber(data.percent + '%')}
+        </div>
         <div class="bar-percent-container">
           <div class="bar-percent" 
               style="background-color:${EXPENDITURE_CATEGORY[data.category]}" 
