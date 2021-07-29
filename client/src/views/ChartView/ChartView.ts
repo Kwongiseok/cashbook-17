@@ -4,7 +4,7 @@ import Model from '../../models/model';
 import Component from '../../utils/Component';
 import './chartView.scss';
 
-export default class ChartView extends Component {
+export default class ChartView extends Component<Object> {
   constructor($target: HTMLElement, state: Object) {
     super($target, state);
     Model.subscribe('statechange', (data: any) => {
