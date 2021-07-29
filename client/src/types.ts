@@ -10,3 +10,10 @@ export type ExpenditureCategoryType = {
 
 export type ExpenditureData = { category: string; percent: number; total: number };
 export type ExpenditureDataList = Array<ExpenditureData>;
+
+export interface CalendarDate {
+  prevMonthLastDate: Date;
+  thisMonthFirstDate: Date;
+  thisMonthLastDate: Date;
+  nextMonthFirstDate: Date;
+}

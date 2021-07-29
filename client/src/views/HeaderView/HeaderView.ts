@@ -6,12 +6,16 @@ import { HistoryState } from '../../types';
 import CALENDAR_ICON_PATH from '../../../public/images/calendarIcon.svg';
 import CHART_ICON_PATH from '../../../public/images/chartIcon.svg';
 import DOCS_ICON_PATH from '../../../public/images/docsIcon.svg';
+import Model from '../../models/model';
 
 export default class HeaderView extends Component {
   $state: HistoryState;
   constructor($target: HTMLElement, state: HistoryState) {
     super($target, state);
     this.$state = state;
+    Model.subscribe('statechange', () => {
+      this.handleIconWhenChangeState(history.state.path);
+    });
   }
 
   mounted(): void {
@@ -19,7 +23,8 @@ export default class HeaderView extends Component {
   }
 
   template(): string {
-    return `<div class="header-content-container">
+    return `
+    <div class="header-content-container">
       <button class="header-home">우아한 가계부</button>
       <div class="header-navigator-wrapper"></div>
       <div class="header-icon-container">
@@ -35,27 +40,18 @@ export default class HeaderView extends Component {
     const $docsButton = document.querySelector('.header-docs') as HTMLElement;
     const $calendarButton = document.querySelector('.header-calendar') as HTMLElement;
     const $chartButton = document.querySelector('.header-chart') as HTMLElement;
-    $docsButton.classList.add('icon-clicked');
 
     $homeButton.addEventListener('click', () => {
       trigger('statechange', { ...history.state, path: '/' });
-      this.resetButtonClickedClass();
-      $docsButton.classList.add('icon-clicked');
     });
     $docsButton.addEventListener('click', () => {
       trigger('statechange', { ...history.state, path: '/' });
-      this.resetButtonClickedClass();
-      $docsButton.classList.add('icon-clicked');
     });
     $calendarButton.addEventListener('click', () => {
       trigger('statechange', { ...history.state, path: '/calendar' });
-      this.resetButtonClickedClass();
-      $calendarButton.classList.add('icon-clicked');
     });
     $chartButton.addEventListener('click', () => {
       trigger('statechange', { ...history.state, path: '/chart' });
-      this.resetButtonClickedClass();
-      $chartButton.classList.add('icon-clicked');
     });
   }
 
@@ -64,7 +60,7 @@ export default class HeaderView extends Component {
     elements.forEach((el) => el.classList.remove('icon-clicked'));
   }
 
-  handleIconWhenPopState(path: string) {
+  handleIconWhenChangeState(path: string) {
     const $docsButton = document.querySelector('.header-docs') as HTMLElement;
     const $calendarButton = document.querySelector('.header-calendar') as HTMLElement;
     const $chartButton = document.querySelector('.header-chart') as HTMLElement;

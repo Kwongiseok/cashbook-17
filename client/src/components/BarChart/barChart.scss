@@ -1,11 +1,18 @@
 .bar-total-expenditure {
-  height: 15%;
+  display: flex;
   text-align: center;
-  font-size: 1.2rem;
+  font-weight: 700;
+  color: #f45452;
+  font-size: 20px;
+}
+.bar-total-expenditure-title {
+  color: #2ac1bc;
+  margin-right: 1.2rem;
 }
 .bar-container {
   display: flex;
   flex-direction: column;
+  margin-top: 2.2rem;
   height: 85%;
 }
 .bar-expenditure-container {
@@ -14,6 +21,11 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 1.4rem;
+  cursor: pointer;
+  border-radius: 8px;
+  &:hover {
+    background-color: #00000020;
+  }
 }
 
 .bar-expenditure-left {
@@ -51,6 +63,31 @@
 .bar-percent {
   height: 100%;
   width: 0;
-  transition: width 600ms;
+  transition: width 1.3s;
   border-radius: 6px;
+}
+.bar-expenditure-right {
+  display: flex;
+  overflow: hidden;
+}
+
+.rolling-container {
+  position: relative;
+  overflow: hidden;
+}
+.rolling-real-text {
+  visibility: hidden;
+}
+.rolling-text {
+  position: absolute;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  opacity: 0.9;
+  animation: rotate1;
+}
+
+@keyframes rotate1 {
+  100% {
+    transform: translateY(10em);
+  }
 }
