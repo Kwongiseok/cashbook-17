@@ -77,8 +77,8 @@ export default class MainView extends Component<MainViewState> {
   setup() {}
 
   mounted() {
-    const $inputBar = $('.input-bar');
-    const $cashbookList = $('.cashbook-list') as HTMLUListElement;
+    const $inputBar = document.querySelector('.input-bar') as HTMLElement;
+    const $cashbookList = document.querySelector('.cashbook-list') as HTMLUListElement;
 
     new InputBar($inputBar, { addCashBook: this.addCashbook.bind(this) });
     this.setCashbookList($cashbookList);
@@ -259,7 +259,3 @@ export default class MainView extends Component<MainViewState> {
     return !isNaN(Number(data));
   }
 }
-
-const $ = (query: string): HTMLElement => {
-  return document.querySelector(query) as HTMLElement;
-};
