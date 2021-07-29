@@ -12,16 +12,6 @@
   border: 1px solid #ccd3d3;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1), 0px 4px 20px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
-  animation-name: input-bar-animation;
-  animation-duration: 0.5s;
-}
-@keyframes input-bar-animation {
-  0% {
-    top: -10px;
-  }
-  100% {
-    top: -32px;
-  }
 }
 .content {
   display: flex;
