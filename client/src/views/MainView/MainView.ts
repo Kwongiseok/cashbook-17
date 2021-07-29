@@ -1,10 +1,12 @@
 import Component from '../../utils/Component';
 import Model from '../../models/model';
 import DatePicker from '../../components/DatePicker/DatePicker';
-import InputBar from './InputBar/InputBar';
+import InputBar from '../../components/InputBar/InputBar';
 import { HistoryState, CashcooksResponse, CashbookType } from '../../types';
 import { DAY_OF_THE_WEEK } from '../../constants/days';
 import { CATEGORY_COLOR } from '../../constants/category';
+import { triggerByElement } from '../../utils/customEvent';
+import { ROLLING_NUMBER } from '../../constants/rollingNumber';
 import './mainView.scss';
 
 const dummy: CashcooksResponse = {
@@ -47,37 +49,38 @@ type MainViewState = {
   year?: number;
   month?: number;
   type?: string;
-  incomeChecked?: boolean;
-  expenditureChecked?: boolean;
+  incomeChecked: boolean;
+  expenditureChecked: boolean;
+  totalElement: number;
+  totalIncome: number;
+  totalExpenditure: number;
+  cashbooks: CashbookType[];
 };
 
 export default class MainView extends Component<MainViewState> {
-  totalElement: number = 0;
-  totalIncome: number = 0;
-  totalExpenditure: number = 0;
-  cashbooks: CashbookType[] = [];
   constructor($target: HTMLElement, state: HistoryState) {
-    super($target, state);
-    this.setCashbookData(state.year, state.month);
+    super($target, {
+      ...state,
+      incomeChecked: true,
+      expenditureChecked: true,
+      totalElement: 0,
+      totalIncome: 0,
+      totalExpenditure: 0,
+      cashbooks: [],
+    });
     Model.subscribe('statechange', (data: HistoryState) => {
       if (data.path !== '/') return;
       this.setState(data);
-      this.setCashbookData(data.year, data.month);
+      this.setCashbookData(this.state.year, this.state.month);
     });
   }
-  setup() {
-    this.setCashbookData(this.state.year, this.state.month);
-    this.setState({
-      incomeChecked: true,
-      expenditureChecked: true,
-    });
-  }
+  setup() {}
 
   mounted() {
     const $inputBar = $('.input-bar');
     const $cashbookList = $('.cashbook-list') as HTMLUListElement;
 
-    new InputBar($inputBar, history.state);
+    new InputBar($inputBar, { addCashBook: this.addCashbook.bind(this) });
     this.setCashbookList($cashbookList);
   }
 
@@ -87,15 +90,21 @@ export default class MainView extends Component<MainViewState> {
         <div class="input-bar"></div>
         <div class="content">
           <div class="header">
-            <label class="total-elements">전체 내역 ${this.totalElement}건</label>
+            <div class="total-elements">전체 내역 ${this.makeRollingNumber(String(this.getTotalElement()))}건</div>
             <div class="selector">
               <input id="checkbox-income" type="checkbox" hidden ${this.state.incomeChecked ? 'checked' : ''}>
               <label for="checkbox-income" class="checkmark"></label>
-              <label class="income">수입 ${this.totalIncome.toLocaleString()}</label>
+              <div class="income">
+                <label>수입</label>
+                ${this.makeRollingNumber(this.state.totalIncome.toLocaleString())}
+              </div>
 
               <input id="checkbox-expenditure" type="checkbox" hidden ${this.state.expenditureChecked ? 'checked' : ''}>
               <label for="checkbox-expenditure" class="checkmark"></label>
-              <label class="expenditure">지출 ${this.totalExpenditure.toLocaleString()}</label>
+              <div class="expenditure">
+                <label>지출</label>
+                ${this.makeRollingNumber(this.state.totalExpenditure.toLocaleString())}
+              </div>
             </div>
           </div>
           <ul class="cashbook-list"></ul>
@@ -123,14 +132,25 @@ export default class MainView extends Component<MainViewState> {
   setCashbookData(year?: number, month?: number) {
     // 서버 요청
     const result = dummy;
-    this.totalElement = result.totalElements;
-    this.totalIncome = result.totalIncome;
-    this.totalExpenditure = result.totalExpenditure;
-    this.cashbooks = result.cashbooks;
+    this.setState({
+      totalElement: result.totalElements,
+      totalIncome: result.totalIncome,
+      totalExpenditure: result.totalExpenditure,
+      cashbooks: result.cashbooks,
+    });
   }
 
   getMonth() {
     return this.state.month;
+  }
+
+  getTotalElement() {
+    const { incomeChecked, expenditureChecked } = this.state;
+    return this.state.cashbooks.filter(
+      (cashbook) =>
+        (cashbook.categoryType === 'income' && incomeChecked) ||
+        (cashbook.categoryType === 'expenditure' && expenditureChecked)
+    ).length;
   }
 
   setCashbookList($cashbookList: HTMLUListElement) {
@@ -142,8 +162,9 @@ export default class MainView extends Component<MainViewState> {
     let month = String(this.state.month);
     const { incomeChecked, expenditureChecked } = this.state;
     if (Number(month) < 10) month = '0' + month;
+    let animationIndex = 1;
     for (let i = 31; i >= 1; i--) {
-      const cashbooks = this.cashbooks
+      const cashbooks = this.state.cashbooks
         .filter((cashbook) => cashbook.date === `${year}-${month}-${i}`)
         .filter(
           (cashbook) =>
@@ -154,11 +175,11 @@ export default class MainView extends Component<MainViewState> {
       const dayIndex = new Date(year, Number(month) - 1, i).getDay();
       const totalIncome: number = cashbooks
         .filter((cashbook) => cashbook.categoryType === 'income')
-        .map((cashbook) => cashbook.price)
+        .map((cashbook) => cashbook.price as number)
         .reduce((a, b) => a + b, 0);
       const totalExpenditure: number = cashbooks
         .filter((cashbook) => cashbook.categoryType === 'expenditure')
-        .map((cashbook) => cashbook.price)
+        .map((cashbook) => cashbook.price as number)
         .reduce((a, b) => a + b, 0);
 
       const li = document.createElement('li');
@@ -172,9 +193,13 @@ export default class MainView extends Component<MainViewState> {
         </div>
         <ul class="cashbook-items"></ul>
       `;
+      const $header = li.querySelector('.header') as HTMLElement;
+      $header.style.animationDuration = String(animationIndex++ * 500) + 'ms';
+
       const $cashBookitems = li.querySelector('.cashbook-items') as HTMLUListElement;
       cashbooks.forEach((cashbook) => {
-        const $cashbookItem = document.createElement('li');
+        const $cashbookItem = document.createElement('li') as HTMLLIElement;
+        $cashbookItem.style.animationDuration = String(animationIndex++ * 500) + 'ms';
         $cashbookItem.innerHTML = `
           <div class="category" style="background-color: ${CATEGORY_COLOR[cashbook.category]}">${
           cashbook.category
@@ -183,6 +208,16 @@ export default class MainView extends Component<MainViewState> {
           <div class="payment">${cashbook.payment}</div>
           <div class="price ${cashbook.categoryType}">${cashbook.price.toLocaleString()}</div>
         `;
+        $cashbookItem.addEventListener('click', (e) => {
+          triggerByElement($('.input-bar'), 'selectCashbook', {
+            date: cashbook.date,
+            category: cashbook.category,
+            categoryType: cashbook.categoryType,
+            price: cashbook.price,
+            memo: cashbook.memo,
+            payment: cashbook.payment,
+          });
+        });
         $cashBookitems.appendChild($cashbookItem);
       });
 
@@ -190,11 +225,38 @@ export default class MainView extends Component<MainViewState> {
     }
   }
 
+  addCashbook(cashbook: CashbookType) {
+    this.setState({
+      cashbooks: [...this.state.cashbooks, cashbook],
+    });
+  }
+
   getTotalCash(totalIncome: number, totalExpenditure: number) {
     let result = '';
     result += totalIncome === 0 ? '' : `<label>수입 ${totalIncome.toLocaleString()}</label>`;
     result += totalExpenditure === 0 ? '' : `<label>지출 ${totalExpenditure.toLocaleString()}</label>`;
     return result;
+  }
+
+  makeRollingNumber(total: string): string {
+    const convertedHTML = Array.from(total)
+      .map((txt) => {
+        if (this.isNumeric(txt)) {
+          return `<div class="rolling-container">
+            <span class="rolling-real-text">${txt}</span>
+            <div class="rolling-text" style="top : ${-2000 - parseInt(txt) * 100}%;animation-duration: ${
+            1000 + Math.random() * 10 * 60
+          }ms;">${ROLLING_NUMBER}</div>
+          </div>`;
+        }
+        return `<div class="not-rolling-text">${txt}</div>`;
+      })
+      .join('');
+    return convertedHTML;
+  }
+
+  isNumeric(data: string): boolean {
+    return !isNaN(Number(data));
   }
 }
 

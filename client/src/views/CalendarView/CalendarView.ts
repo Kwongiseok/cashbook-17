@@ -17,7 +17,7 @@ export default class CalendarView extends Component<Object> {
 
   mounted(): void {
     const $calendarBody = document.querySelector('.calendar-body');
-    new Calendar($calendarBody as HTMLElement, this.$state);
+    new Calendar($calendarBody as HTMLElement, this.state);
   }
 
   template(): string {

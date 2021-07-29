@@ -24,15 +24,22 @@
     justify-content: space-between;
     width: 100%;
 
-    > label {
+    > div {
+      display: flex;
       color: #219a95;
       font-size: 22px;
       font-weight: 400;
+
+      > div {
+        margin-left: 5px;
+      }
     }
     > .selector {
       display: flex;
+      height: 18px;
       font-size: 18px;
-      line-height: 22px;
+      line-height: 18px;
+      align-items: flex-end;
 
       > input:checked + .checkmark {
         background-color: #2ac1bc;
@@ -67,11 +74,21 @@
       }
 
       > .income {
+        display: flex;
         color: #2e58a7;
         margin-right: 20px;
+
+        > label {
+          margin-right: 5px;
+        }
       }
       > .expenditure {
+        display: flex;
         color: #f45452;
+
+        > label {
+          margin-right: 5px;
+        }
       }
     }
   }
@@ -89,6 +106,8 @@
         justify-content: space-between;
         padding: 20px 0;
         border-bottom: 1px solid #ccd3d3;
+        animation-name: show-animation;
+        transition: 0.2s;
 
         > .date {
           font-size: 14px;
@@ -120,24 +139,12 @@
           display: flex;
           padding: 20px 12px;
           border-bottom: 1px solid #ccd3d3;
-          animation-name: cashbook-animation;
-          animation-duration: 0.3s;
-          transition: 0.3s;
+          animation-name: show-animation;
+          transition: 0.2s;
           cursor: pointer;
 
           &:hover {
             background-color: #e6e9e9;
-          }
-
-          @keyframes cashbook-animation {
-            0% {
-              opacity: 0;
-              transform: translateY(10px);
-            }
-            100% {
-              opacity: 1;
-              transform: translateY(0);
-            }
           }
 
           > div {
@@ -171,6 +178,17 @@
               color: #f45452;
             }
           }
+        }
+      }
+
+      @keyframes show-animation {
+        0% {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
         }
       }
     }

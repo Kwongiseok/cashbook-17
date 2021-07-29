@@ -9,10 +9,9 @@ import DOCS_ICON_PATH from '../../../public/images/docsIcon.svg';
 import Model from '../../models/model';
 
 export default class HeaderView extends Component<HistoryState> {
-  state: HistoryState;
   constructor($target: HTMLElement, state: HistoryState) {
     super($target, state);
-    this.state = state;
+    Model.subscribe('statechange', () => this.handleIconWhenChangeState(history.state.path));
   }
 
   mounted() {
