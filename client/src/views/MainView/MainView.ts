@@ -173,14 +173,14 @@ export default class MainView extends Component<MainViewState> {
         );
       if (cashbooks.length === 0) continue;
       const dayIndex = new Date(year, Number(month) - 1, i).getDay();
-      const totalIncome: number = cashbooks
-        .filter((cashbook) => cashbook.categoryType === 'income')
-        .map((cashbook) => cashbook.price as number)
-        .reduce((a, b) => a + b, 0);
-      const totalExpenditure: number = cashbooks
-        .filter((cashbook) => cashbook.categoryType === 'expenditure')
-        .map((cashbook) => cashbook.price as number)
-        .reduce((a, b) => a + b, 0);
+      const totalIncome: number = cashbooks.reduce((a, cashbook) => {
+        if (cashbook.categoryType === 'income') return Number(cashbook.price) + a;
+        return a;
+      }, 0);
+      const totalExpenditure: number = cashbooks.reduce((a, cashbook) => {
+        if (cashbook.categoryType === 'expenditure') return Number(cashbook.price) + a;
+        return a;
+      }, 0);
 
       const li = document.createElement('li');
       li.innerHTML = `
