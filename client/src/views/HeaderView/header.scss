@@ -8,7 +8,32 @@
 
 .header-content-container {
   display: flex;
-  width: 100%;
-  padding: 4rem 10rem;
+  width: 70%;
+  margin: auto;
+  padding-top: 4%;
   justify-content: space-between;
+  align-items: center;
+}
+
+.header-home {
+  background-color: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 1.4rem;
+}
+
+.header-navigator-wrapper {
+  display: flex;
+}
+
+.header-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  filter: invert(100%) sepia(0%) saturate(2777%) hue-rotate(110deg) brightness(122%) contrast(65%);
+}
+
+.icon-clicked {
+  filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(48deg) brightness(105%) contrast(106%);
 }

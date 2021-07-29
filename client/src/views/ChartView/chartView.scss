@@ -1,0 +1,34 @@
+.chart-container {
+  display: flex;
+  width: 70%;
+  height: 70vh;
+  margin: auto;
+  position: relative;
+}
+.main-chart-container {
+  box-sizing: border-box;
+  display: flex;
+  width: 100%;
+  margin: auto;
+  position: absolute;
+  background-color: #fff;
+  height: 75%;
+  top: -2rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+  padding: 3rem;
+}
+
+.donut-chart-container {
+  width: 50%;
+  height: 100%;
+}
+
+.bar-chart-container {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  width: 50%;
+  height: 100%;
+}

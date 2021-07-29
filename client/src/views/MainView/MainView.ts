@@ -1,5 +1,6 @@
 import Component from '../../utils/Component';
 import Model from '../../models/model';
+import DatePicker from '../../components/DatePicker/DatePicker';
 
 export default class MainView extends Component {
   constructor($target: HTMLElement, state: Object) {
@@ -13,7 +14,7 @@ export default class MainView extends Component {
   mounted() {}
 
   template(): string {
-    return `<div>hi</div>`;
+    return '';
   }
 
   setEvent() {}
