@@ -209,7 +209,7 @@ export default class MainView extends Component<MainViewState> {
           <div class="price ${cashbook.categoryType}">${cashbook.price.toLocaleString()}</div>
         `;
         $cashbookItem.addEventListener('click', (e) => {
-          triggerByElement($('.input-bar'), 'selectCashbook', {
+          triggerByElement(document.querySelector('.input-bar') as HTMLInputElement, 'selectCashbook', {
             date: cashbook.date,
             category: cashbook.category,
             categoryType: cashbook.categoryType,
