@@ -24,7 +24,7 @@ export default class InputBar extends Component<InputType> {
   constructor($target: HTMLElement, state: InputType) {
     super($target, state);
     listenByElement($target, 'selectCashbook', (e) => {
-      console.log(e.detail);
+      this.setState(e.detail);
     });
   }
 

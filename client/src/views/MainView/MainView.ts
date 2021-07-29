@@ -213,7 +213,7 @@ export default class MainView extends Component<MainViewState> {
             date: cashbook.date,
             category: cashbook.category,
             categoryType: cashbook.categoryType,
-            price: cashbook.price,
+            price: (cashbook.price as number) * (cashbook.categoryType === 'expenditure' ? -1 : 1),
             memo: cashbook.memo,
             payment: cashbook.payment,
           });
