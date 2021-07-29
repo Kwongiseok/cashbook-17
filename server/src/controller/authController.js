@@ -1,11 +1,9 @@
-import { Router, Request, Response } from 'express';
-import AuthService from '../service/authService';
+import { Router } from 'express';
+import AuthService from '../service/authService.js';
 
 const authService = new AuthService();
 
 export default class AuthController {
-  router: Router;
-
   constructor() {
     this.router = Router();
   }
@@ -15,7 +13,7 @@ export default class AuthController {
     return this.router;
   }
 
-  post(req: Request, res: Response, next: any) {
+  post(req, res, next) {
     res.status(200).json('asdasda');
   }
 }
