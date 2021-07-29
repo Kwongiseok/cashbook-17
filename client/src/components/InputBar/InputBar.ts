@@ -1,36 +1,46 @@
-import Component from '../../../utils/Component';
-import Model from '../../../models/model';
-import ArrowIcon from '../../../../public/images/arrow-down.svg';
-import DeleteIcon from '../../../../public/images/deleteIcon.svg';
+import Component from '../../utils/Component';
+import ArrowIcon from '../../../public/images/arrow-down.svg';
+import DeleteIcon from '../../../public/images/deleteIcon.svg';
 import './inputBar.scss';
-import { HistoryState } from '../../../types';
-import alert from '../utils/alert/Alert';
-import confirm from '../utils/confirm/Confirm';
+import { CashbookType, CATEGORY, CATEGORY_TYPE, HistoryState } from '../../types';
+import alert from '../../views/MainView/utils/alert/Alert';
+import confirm from '../../views/MainView/utils/confirm/Confirm';
+import { listenByElement } from '../../utils/customEvent';
+import Alert from '../../views/MainView/utils/alert/Alert';
+import DatePicker from '../../components/DatePicker/DatePicker';
 
 let dummyPayment = ['신한카드', '계좌이체', '현금'];
 
 type InputType = {
-  path?: string;
-  year?: number;
-  month?: number;
-  type?: string;
-  dateInput?: string;
-  category?: string;
-  categoryType?: string;
+  date?: string;
+  category?: CATEGORY;
+  categoryType?: CATEGORY_TYPE;
   memo?: string;
   payment?: string;
   price?: number;
+  addCashBook: (cashbook: CashbookType) => void;
 };
 
 export default class InputBar extends Component<InputType> {
-  constructor($target: HTMLElement, state: HistoryState) {
+  constructor($target: HTMLElement, state: InputType) {
     super($target, state);
+    listenByElement($target, 'selectCashbook', (e) => {
+      console.log(e.detail);
+    });
   }
 
   setup() {}
 
   mounted() {
     this.setPaymentList();
+
+    const $datePickerBox = this.$target.querySelector('.input-bar__date-picker') as HTMLElement;
+    new DatePicker($datePickerBox, history.state);
+    listenByElement($datePickerBox, 'date-change', (e) => {
+      this.setState({
+        date: e.detail.date,
+      });
+    });
   }
 
   template(): string {
@@ -38,6 +48,7 @@ export default class InputBar extends Component<InputType> {
       <div class="input-bar__date">
         <label>일자</label>
         <input type="text" value="${this.getCurrentDate()}">
+        <div class="input-bar__date-picker"></div>
       </div>
       <div class="input-bar__category">
         <label>분류</label>
@@ -91,7 +102,8 @@ export default class InputBar extends Component<InputType> {
   }
 
   setEvent() {
-    const $dateInput = this.$target.querySelector('.input-bar__date input');
+    const $date = this.$target.querySelector('.input-bar__date input');
+    const $datePickerBox = this.$target.querySelector('.input-bar__date-picker') as HTMLElement;
     const $categoryValue = this.$target.querySelector('.category-value');
     const $categoryDropdown = this.$target.querySelector('.input-bar__category .input-dropdown');
     const $memoInput = this.$target.querySelector('.input-bar__memo input');
@@ -100,48 +112,28 @@ export default class InputBar extends Component<InputType> {
     const $priceInput = this.$target.querySelector('.input-bar__price input');
     const $submitButton = this.$target.querySelector('.submit');
 
-    $dateInput?.addEventListener('change', this.inputChnageHandler.bind(this));
-    $categoryValue?.addEventListener('click', this.categoryOpenHandler.bind(this));
+    $date?.addEventListener('click', this.datePickerOpenHandler.bind(this));
+    $date?.addEventListener('change', this.inputChnageHandler.bind(this));
+    $categoryValue?.addEventListener('click', (e) => this.categoryOpenHandler(e));
     $categoryDropdown?.addEventListener('click', this.categoryClickHandler.bind(this));
     $memoInput?.addEventListener('change', this.memoChangeHandler.bind(this));
-    $paymentValue?.addEventListener('click', this.paymentOpenHandler.bind(this));
+    $paymentValue?.addEventListener('click', (e) => this.paymentOpenHandler(e));
     $paymentDropdown?.addEventListener('click', this.paymentClickHandler.bind(this));
     $priceInput?.addEventListener('keyup', this.priceInputHandler.bind(this));
     $priceInput?.addEventListener('change', this.priceChangeHandler.bind(this));
     $submitButton?.addEventListener('click', this.addCashbook.bind(this));
-    document.onclick = (e: MouseEvent) => {
-      if (
-        !(
-          (e.target as HTMLElement).closest('.category-value') || (e.target as HTMLElement).closest('.payment-value')
-        ) &&
-        !(e.target as HTMLElement).closest('.input-dropdown')
-      ) {
-        $categoryDropdown?.classList.remove('open');
-        $paymentDropdown?.classList.remove('open');
-      }
-    };
+    document.addEventListener('click', () => {
+      $datePickerBox.style.display = 'none';
+      $categoryDropdown?.classList.remove('open');
+      $paymentDropdown?.classList.remove('open');
+    });
   }
 
   getCurrentDate() {
-    if (this.state.dateInput) {
-      return this.state.dateInput;
-    } else {
-      let date = new Date();
-      let year = date.getFullYear();
-      let month = (date.getMonth() + 1).toString();
-      let day = date.getDate().toString();
-      if (Number.parseInt(month) < 10) {
-        month = '0' + month;
-      }
-      if (Number.parseInt(day) < 10) {
-        day = '0' + day;
-      }
-      const result = year + month + day;
-      this.setState({
-        dateInput: result,
-      });
-      return result;
+    if (this.state.date) {
+      return this.state.date;
     }
+    return '';
   }
   getCurrentCategory() {
     if (this.state.category) {
@@ -172,13 +164,27 @@ export default class InputBar extends Component<InputType> {
     }
   }
 
+  datePickerOpenHandler(e: Event) {
+    e.stopPropagation();
+    const $datePickerBox = this.$target.querySelector('.input-bar__date-picker') as HTMLElement;
+    const $paymentDropdown = this.$target.querySelector('.input-bar__payment .input-dropdown');
+    const $categoryDropdown = this.$target.querySelector('.input-bar__category .input-dropdown');
+    $categoryDropdown?.classList.remove('open');
+    $paymentDropdown?.classList.remove('open');
+    $datePickerBox.style.display = 'block';
+  }
   inputChnageHandler(e: any) {
     this.setState({
-      dateInput: e.target.value,
+      date: e.target.value,
     });
   }
-  categoryOpenHandler() {
+  categoryOpenHandler(e: Event) {
+    e.stopPropagation();
+    const $datePickerBox = this.$target.querySelector('.input-bar__date-picker') as HTMLElement;
+    const $paymentDropdown = this.$target.querySelector('.input-bar__payment .input-dropdown');
     const $categoryDropdown = this.$target.querySelector('.input-bar__category .input-dropdown');
+    $datePickerBox.style.display = 'none';
+    $paymentDropdown?.classList.remove('open');
     $categoryDropdown?.classList.toggle('open');
   }
   categoryClickHandler(e: any) {
@@ -201,8 +207,13 @@ export default class InputBar extends Component<InputType> {
       memo: e.target.value,
     });
   }
-  paymentOpenHandler(e: any) {
+  paymentOpenHandler(e: Event) {
+    e.stopPropagation();
+    const $datePickerBox = this.$target.querySelector('.input-bar__date-picker') as HTMLElement;
     const $paymentDropdown = this.$target.querySelector('.input-bar__payment .input-dropdown');
+    const $categoryDropdown = this.$target.querySelector('.input-bar__category .input-dropdown');
+    $datePickerBox.style.display = 'none';
+    $categoryDropdown?.classList.remove('open');
     $paymentDropdown?.classList.toggle('open');
   }
   paymentClickHandler(e: any) {
@@ -220,9 +231,22 @@ export default class InputBar extends Component<InputType> {
       price: Number(input.value.replaceAll(',', '')),
     });
   }
-  addCashbook() {
-    const { dateInput, category, categoryType, memo, payment, price } = this.state as InputType;
-    console.log(dateInput, category, categoryType, memo, payment, price);
+  async addCashbook() {
+    const { date, category, categoryType, memo, payment, price } = this.state as InputType;
+    if (date === '' || !category || memo === '' || payment === '' || !price) {
+      await Alert('내용을 모두 입력후 진행 해주세요.');
+      return;
+    }
+    let finalPrice = price;
+    if (categoryType === 'expenditure') finalPrice = -Number(price);
+    this.state.addCashBook({
+      date: date,
+      category: category,
+      categoryType: categoryType,
+      memo: memo,
+      payment: payment,
+      price: finalPrice,
+    });
   }
 
   setPaymentList() {
@@ -265,7 +289,12 @@ export default class InputBar extends Component<InputType> {
       const $paymentDropdown = this.$target.querySelector('.input-bar__payment .input-dropdown') as HTMLElement;
       const $item = $paymentDropdown.querySelector(`[data-value="${payment}"]`) as HTMLElement;
       $item.parentElement?.removeChild($item);
-      dummyPayment.splice(dummyPayment.indexOf(payment), 1); // 서버로 삭제 요청 보내기
+      dummyPayment = dummyPayment.filter((dummyPayment) => dummyPayment !== payment); // 서버로 삭제 요청 보내기
+      if (this.state.payment === payment) {
+        this.setState({
+          payment: '',
+        });
+      }
     }
   }
 }
