@@ -1,0 +1,214 @@
+.input-bar {
+  padding: 16px 0;
+
+  & > div {
+    height: 44px;
+    padding: 0 24px;
+    border-right: 1px solid #c1c5c5;
+
+    & > label {
+      color: #219a95;
+      font-size: 12px;
+    }
+    & > input {
+      font-size: 16px;
+      margin-top: 4px;
+    }
+
+    &:last-child {
+      border-right: none;
+    }
+  }
+
+  &__date {
+    width: 135px;
+
+    & > input {
+      width: 80px;
+      height: 23px;
+      border: none;
+      outline: none;
+    }
+  }
+  &__category {
+    position: relative;
+    width: 150px;
+
+    & > .category-value {
+      display: flex;
+      width: 100px;
+      height: 23px;
+      margin-top: 4px;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+
+      & img {
+        margin-left: 4px;
+      }
+    }
+
+    & .disable {
+      color: #8d9393;
+    }
+  }
+  &__memo {
+    width: 220px;
+
+    & > input {
+      height: 23px;
+      border: none;
+      outline: none;
+    }
+  }
+  &__payment {
+    position: relative;
+    width: 145px;
+
+    & > .payment-value {
+      display: flex;
+      width: 100px;
+      height: 23px;
+      margin-top: 4px;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+
+      & img {
+        margin-left: 4px;
+      }
+    }
+
+    & li {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    & .disable {
+      color: #8d9393;
+    }
+  }
+  &__price {
+    width: 250px;
+
+    > div {
+      position: relative;
+      display: flex;
+      align-items: center;
+      margin-top: 4px;
+
+      > span {
+        font-size: 30px;
+        font-weight: bold;
+        color: #f45452;
+
+        &.income {
+          color: #219a95;
+        }
+      }
+      > input {
+        border: none;
+        outline: none;
+        margin: 0 8px;
+        font-size: 16px;
+        width: 96px;
+        text-align: right;
+        color: #f45452;
+
+        &.income {
+          color: #219a95;
+        }
+      }
+      > label {
+        margin-right: 50px;
+      }
+      > div {
+        display: flex;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        right: -10px;
+        bottom: 5px;
+        margin-left: 24px;
+        background-color: unset;
+        border: 2px solid #2ac1bc;
+        border-radius: 10px;
+        cursor: pointer;
+
+        > div {
+          width: 10px;
+          height: 15px;
+          border: solid #2ac1bc;
+          border-width: 0 3px 3px 0;
+          transform: rotate(45deg);
+          border-radius: 1px;
+          margin-top: 8px;
+        }
+
+        &:hover {
+          background-color: #2ac1bc;
+
+          > div {
+            border-color: white;
+          }
+        }
+      }
+    }
+  }
+
+  .input-dropdown {
+    display: none;
+    position: absolute;
+    background: #fcfcfc;
+    left: 0;
+    top: 70px;
+    padding: 10px 0;
+    background: #fcfcfc;
+    border: 1px solid #ccd3d3;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1), 0px 4px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    animation-name: category-dropdown-open;
+    animation-duration: 0.5s;
+
+    &.open {
+      display: block;
+    }
+
+    & .subject {
+      color: #b2b8b8;
+      cursor: default;
+      margin: 0 10px;
+      width: 100%;
+    }
+
+    & li {
+      width: 100px;
+      border-bottom: 1px solid #ccd3d3;
+      padding: 10px 0;
+      margin: 0 24px;
+      color: #1e2222;
+      cursor: pointer;
+      transition: 0.2s;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+  }
+
+  @keyframes category-dropdown-open {
+    0% {
+      opacity: 0;
+      top: 50px;
+    }
+    100% {
+      opacity: 1;
+      top: 70px;
+    }
+  }
+}
