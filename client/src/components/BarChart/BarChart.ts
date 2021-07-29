@@ -54,11 +54,7 @@ export default class BarChart extends Component {
   }
 
   makeBarGraph(data: ExpenditureDataList): string {
-    const array: Array<String> = [];
-    data.forEach((item) => {
-      array.push(this.convertToBarHTML(item));
-    });
-    return array.join('');
+    return data.map((item) => this.convertToBarHTML(item)).join('');
   }
 
   convertToBarHTML(data: ExpenditureData): string {
