@@ -11,13 +11,10 @@ export default class MainView extends Component {
   }
   setup() {}
 
-  mounted() {
-    const main = document.querySelector('.mainView');
-    new DatePicker(main as HTMLElement, this.$state);
-  }
+  mounted() {}
 
   template(): string {
-    return `<div class="mainView">hi</div>`;
+    return '';
   }
 
   setEvent() {}
