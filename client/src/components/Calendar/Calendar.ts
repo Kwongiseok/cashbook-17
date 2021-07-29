@@ -3,15 +3,13 @@ import './calendar.scss';
 import { CalendarDate, HistoryState } from '../../types';
 import formatPrice from '../../utils/formatPrice';
 
-export default class Calendar extends Component {
-  $state: HistoryState;
+export default class Calendar extends Component<HistoryState> {
   constructor($target: HTMLElement, state: HistoryState) {
     super($target, state);
-    this.$state = state;
   }
   template(): string {
-    if (this.$state) {
-      const { year, month } = this.$state as HistoryState;
+    if (this.state) {
+      const { year, month } = this.state as HistoryState;
       return `
       ${this.convertCalendarDaysToHTML(year as number, (month as number) - 1)}
     `;
@@ -54,7 +52,7 @@ export default class Calendar extends Component {
 
   pushNowDate(thisMonthFirstDate: Date, thisMonthLastDate: Date, array: Array<string>) {
     const today = new Date();
-    const isToday = today.getFullYear() === this.$state.year && today.getMonth() === (this.$state.month as number) - 1;
+    const isToday = today.getFullYear() === this.state.year && today.getMonth() === (this.state.month as number) - 1;
     for (let d = 0; d < thisMonthLastDate.getDate(); d++) {
       array.push(
         `<div

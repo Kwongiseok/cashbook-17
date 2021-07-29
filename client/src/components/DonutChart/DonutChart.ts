@@ -13,11 +13,9 @@ const dummy = [
   { category: '미분류', percent: 1, total: 10200 },
 ];
 
-export default class DonutChart extends Component {
-  $state: HistoryState;
+export default class DonutChart extends Component<HistoryState> {
   constructor($target: HTMLElement, state: HistoryState) {
     super($target, state);
-    this.$state = state;
   }
   mounted(): void {
     const $container = document.querySelector('.donut-container');
