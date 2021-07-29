@@ -63,7 +63,8 @@ export default class BarChart extends Component {
       <div class="bar-expenditure-left">
         <div class="bar-category" style="background-color:${EXPENDITURE_CATEGORY[data.category]}">${data.category}</div>
         <div class="bar-percent-text-container">
-          ${this.makeRollingNumber(data.percent + '%')}
+          ${this.makeRollingNumber(`${data.percent}`)}
+          <span class="bar-percent-ex">%</span>
         </div>
         <div class="bar-percent-container">
           <div class="bar-percent" 
@@ -77,7 +78,6 @@ export default class BarChart extends Component {
   }
 
   makeRollingNumber(total: string): string {
-    console.log(Array.from(total));
     const convertedHTML = Array.from(total)
       .map((txt) => {
         if (this.isNumeric(txt)) {
