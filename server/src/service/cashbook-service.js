@@ -11,7 +11,6 @@ class CashBookService {
     const category = {};
     let totalPrice = 0;
     datas.forEach((item) => {
-      console.log(item, item.category, item.price);
       totalPrice += item.price;
       if (category[item.category]) {
         category[item.category].total += item.price;
