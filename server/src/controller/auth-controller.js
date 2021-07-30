@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { githubConfig } from '../config/github.js';
 import { authService } from '../service/auth-service.js';
 
 class AuthController {
@@ -14,7 +15,7 @@ class AuthController {
 
   getOAuthGitHub(req, res, next) {
     try {
-      res.redirect(process.env.GITHUB_SIGN_URL);
+      res.redirect(githubConfig.signURL);
     } catch (error) {
       console.error(error);
       next(error);

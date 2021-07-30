@@ -1,18 +1,16 @@
 import WoowahanORM from 'woowahan-orm';
-import dotenv from 'dotenv';
 import User from './User.js';
 import CashBook from './CashBook.js';
 import Payment from './Payment.js';
-
-dotenv.config();
+import { dbConfig } from '../config/db.js';
 
 async function init() {
   WoowahanORM(
     {
-      host: process.env.DB_HOST,
-      user: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME,
+      host: dbConfig.host,
+      user: dbConfig.user,
+      password: dbConfig.password,
+      database: dbConfig.name,
     },
     {
       sync: {
