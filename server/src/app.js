@@ -2,12 +2,11 @@ import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import session from 'express-session';
-import init from './models/index.js';
+import initDB from './models/index.js';
 import { serverConfig } from './config/server-env.js';
 import globalController from './controller/global-controller.js';
 import errorControl from './middleware/error-control.js';
 
-const initDB = init;
 const PORT = serverConfig.PORT || 8080;
 
 const app = express();

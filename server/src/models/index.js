@@ -4,7 +4,7 @@ import CashBook from './CashBook.js';
 import Payment from './Payment.js';
 import { dbConfig } from '../config/db.js';
 
-async function init() {
+async function initDB() {
   WoowahanORM(
     {
       host: dbConfig.host,
@@ -27,4 +27,4 @@ async function initModel() {
   await Payment.init();
 }
 
-export default init;
+export default initDB;
