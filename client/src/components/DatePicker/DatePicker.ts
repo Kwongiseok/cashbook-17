@@ -1,19 +1,18 @@
 import { DAY_OF_THE_WEEK } from '../../constants/days';
 import { CalendarDate, HistoryState } from '../../types';
 import Component from '../../utils/Component';
+import { triggerByElement } from '../../utils/customEvent';
 import './datePicker.scss';
 
-export default class DatePicker extends Component {
-  $state: HistoryState;
+export default class DatePicker extends Component<HistoryState> {
   constructor($target: HTMLElement, state: HistoryState) {
     super($target, state);
-    this.$state = state;
   }
 
   mounted(): void {
     const $days = document.querySelector('.datePicker-days') as HTMLElement;
     const $body = document.querySelector('.datePicker-body') as HTMLElement;
-    const { year, month } = this.$state;
+    const { year, month } = this.state;
     $days.innerHTML = this.convertDayOfTheWeekToHTML();
     $body.innerHTML = this.convertCalendarDaysToHTML(year as number, (month as number) - 1);
   }
@@ -28,20 +27,25 @@ export default class DatePicker extends Component {
       const target = e.target as HTMLElement;
       const el = target.closest('.now-month') as HTMLElement;
       if (el && el.dataset.date) {
-        // TODO: 추후에 date 받아서 입력할 년월일 계산하여 적용
-        console.log(this.$state.year, this.$state.month, el.dataset.date);
+        let month = String(this.state.month),
+          day = String(el.dataset.date);
+        if (Number(month) < 10) month = '0' + month;
+        if (Number(day) < 10) day = '0' + day;
+        triggerByElement(this.$target, 'date-change', {
+          date: `${this.state.year}-${month}-${day}`,
+        });
       }
       return;
     });
   }
 
   template(): string {
-    if (this.$state) {
+    if (this.state) {
       return `
       <div class="datePicker">
         <div class="datePicker-header">
           <button class="datePicker-button datePicker-left">${'<'}</button>
-          <span>${this.$state.month}월 ${this.$state.year}</span>
+          <span>${this.state.month}월 ${this.state.year}</span>
           <button class="datePicker-button datePicker-right">${'>'}</button>
         </div>
         <ul class="datePicker-days"></ul>
@@ -89,7 +93,7 @@ export default class DatePicker extends Component {
 
   pushNowDate(thisMonthFirstDate: Date, thisMonthLastDate: Date, array: Array<string>) {
     const today = new Date();
-    const isToday = today.getFullYear() === this.$state.year && today.getMonth() === (this.$state.month as number) - 1;
+    const isToday = today.getFullYear() === this.state.year && today.getMonth() === (this.state.month as number) - 1;
     for (let d = 0; d < thisMonthLastDate.getDate(); d++) {
       array.push(
         `<div
@@ -125,18 +129,20 @@ export default class DatePicker extends Component {
     }
   }
 
-  onClickLeft() {
-    if (this.$state.month === 1) {
-      this.setState({ ...this.$state, month: 12, year: (this.$state.year as number) - 1 });
+  onClickLeft(e: Event) {
+    e.stopPropagation();
+    if (this.state.month === 1) {
+      this.setState({ ...this.state, month: 12, year: (this.state.year as number) - 1 });
       return;
     }
-    this.setState({ ...this.$state, month: (this.$state.month as number) - 1 });
+    this.setState({ ...this.state, month: (this.state.month as number) - 1 });
   }
-  onClickRight() {
-    if (this.$state.month === 12) {
-      this.setState({ ...this.$state, month: 1, year: (this.$state.year as number) + 1 });
+  onClickRight(e: Event) {
+    e.stopPropagation();
+    if (this.state.month === 12) {
+      this.setState({ ...this.state, month: 1, year: (this.state.year as number) + 1 });
       return;
     }
-    this.setState({ ...this.$state, month: (this.$state.month as number) + 1 });
+    this.setState({ ...this.state, month: (this.state.month as number) + 1 });
   }
 }

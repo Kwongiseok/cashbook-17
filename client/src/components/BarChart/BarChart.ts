@@ -15,11 +15,9 @@ const dummy = [
   { category: '미분류', percent: 1, total: 10200 },
 ];
 
-export default class BarChart extends Component {
-  $state: HistoryState;
+export default class BarChart extends Component<HistoryState> {
   constructor($target: HTMLElement, state: HistoryState) {
     super($target, state);
-    this.$state = state;
   }
 
   setEvent(): void {
@@ -29,7 +27,7 @@ export default class BarChart extends Component {
       const el = target.closest('.bar-expenditure-container') as HTMLElement;
       if (el && el.dataset.category) {
         // TODO: 추후에 date 받아서 입력할 년월일 계산하여 6개월 데이터 받아와야 함.
-        console.log(this.$state.year, this.$state.month, el.dataset.category);
+        console.log(this.state.year, this.state.month, el.dataset.category);
       }
     });
   }
@@ -75,7 +73,6 @@ export default class BarChart extends Component {
   }
 
   makeRollingNumber(total: string): string {
-    console.log(Array.from(total));
     const convertedHTML = Array.from(total)
       .map((txt) => {
         if (this.isNumeric(txt)) {

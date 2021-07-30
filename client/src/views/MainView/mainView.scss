@@ -1,0 +1,196 @@
+.main-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.input-bar {
+  display: flex;
+  position: relative;
+  width: 900px;
+  top: -32px;
+  background: #fcfcfc;
+  border: 1px solid #ccd3d3;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1), 0px 4px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 850px;
+
+  > .header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    > div {
+      display: flex;
+      color: #219a95;
+      font-size: 22px;
+      font-weight: 400;
+
+      > div {
+        margin-left: 5px;
+      }
+    }
+    > .selector {
+      display: flex;
+      height: 18px;
+      font-size: 18px;
+      line-height: 18px;
+      align-items: flex-end;
+
+      > input:checked + .checkmark {
+        background-color: #2ac1bc;
+
+        &:after {
+          border-color: white;
+        }
+      }
+
+      > .checkmark {
+        display: flex;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #2ac1bc;
+        box-sizing: border-box;
+        border-radius: 5px;
+        margin-right: 5px;
+        cursor: pointer;
+
+        &:after {
+          content: '';
+          position: absolute;
+          width: 5px;
+          height: 7px;
+          border: solid #2ac1bc;
+          border-width: 0 3px 3px 0;
+          border-radius: 1px;
+          transform: rotate(45deg);
+          margin-top: 2px;
+        }
+      }
+
+      > .income {
+        display: flex;
+        color: #2e58a7;
+        margin-right: 20px;
+
+        > label {
+          margin-right: 5px;
+        }
+      }
+      > .expenditure {
+        display: flex;
+        color: #f45452;
+
+        > label {
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+
+  > .cashbook-list {
+    width: 100%;
+    margin-top: 40px;
+
+    > li {
+      display: flex;
+      flex-direction: column;
+
+      > .header {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px 0;
+        border-bottom: 1px solid #ccd3d3;
+        animation-name: show-animation;
+        transition: 0.2s;
+
+        > .date {
+          font-size: 14px;
+
+          > label {
+            &:first-child {
+              font-weight: 500;
+            }
+            &:last-child {
+              color: #626666;
+              margin-left: 8px;
+            }
+          }
+        }
+        > .total {
+          font-size: 14px;
+          color: #626666;
+
+          > label:last-child {
+            margin-left: 8px;
+          }
+        }
+      }
+      > .cashbook-items {
+        display: flex;
+        flex-direction: column;
+
+        > li {
+          display: flex;
+          padding: 20px 12px;
+          border-bottom: 1px solid #ccd3d3;
+          animation-name: show-animation;
+          transition: 0.2s;
+          cursor: pointer;
+
+          &:hover {
+            background-color: #e6e9e9;
+          }
+
+          > div {
+            display: flex;
+            line-height: 33px;
+            margin-right: 10px;
+            height: 30px;
+          }
+
+          > .category {
+            justify-content: center;
+            width: 92px;
+            background-color: #d092e2;
+            border-radius: 999px;
+            color: white;
+          }
+          > .memo {
+            width: 300px;
+          }
+          > .payment {
+            width: 200px;
+          }
+          > .price {
+            justify-content: flex-end;
+            width: 200px;
+
+            &.income {
+              color: #2e58a7;
+            }
+            &.expenditure {
+              color: #f45452;
+            }
+          }
+        }
+      }
+
+      @keyframes show-animation {
+        0% {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    }
+  }
+}

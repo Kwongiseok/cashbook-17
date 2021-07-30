@@ -8,18 +8,14 @@ import CHART_ICON_PATH from '../../../public/images/chartIcon.svg';
 import DOCS_ICON_PATH from '../../../public/images/docsIcon.svg';
 import Model from '../../models/model';
 
-export default class HeaderView extends Component {
-  $state: HistoryState;
+export default class HeaderView extends Component<HistoryState> {
   constructor($target: HTMLElement, state: HistoryState) {
     super($target, state);
-    this.$state = state;
-    Model.subscribe('statechange', () => {
-      this.handleIconWhenChangeState(history.state.path);
-    });
+    Model.subscribe('statechange', () => this.handleIconWhenChangeState(history.state.path));
   }
 
-  mounted(): void {
-    const navigator = new Navigator(document.querySelector('.header-navigator-wrapper') as HTMLElement, this.$state);
+  mounted() {
+    const navigator = new Navigator(document.querySelector('.header-navigator-wrapper') as HTMLElement, this.state);
   }
 
   template(): string {
