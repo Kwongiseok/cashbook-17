@@ -26,7 +26,7 @@ class AuthController {
     try {
       const { code } = req.query;
       const id = await authService.signInGithub(code);
-      req.session.user = id;
+      req.session.user = `${id}`;
       res.redirect('/');
     } catch (error) {
       console.error(error);

@@ -15,13 +15,9 @@ class ChartController {
   async getMainChart(req, res, next) {
     try {
       const { year, month } = req.query;
-      const user = req.user;
-      const datas = await cashBookService.getMainChartData(user, year, month);
-      if (datas) {
-        res.status(200).json(datas);
-      } else {
-        res.sendStatus(200);
-      }
+      const user_id = req.user_id;
+      const datas = await cashBookService.getMainChartData(user_id, year, month);
+      res.status(200).json(datas);
     } catch (error) {
       console.error(error);
       next(error);

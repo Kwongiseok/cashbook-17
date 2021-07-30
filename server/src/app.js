@@ -32,7 +32,7 @@ app.use((req, res) => res.redirect('/'));
 
 app.use(errorControl);
 
-app.listen(PORT, () => {
-  initDB();
+app.listen(PORT, async () => {
+  await initDB();
   console.log('server is running : ', PORT);
 });
