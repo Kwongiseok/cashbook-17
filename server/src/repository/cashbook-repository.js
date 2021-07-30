@@ -10,7 +10,7 @@ class CashBookRepository {
         attributes: 'category, price',
         where: {
           user_id: id,
-          category_type: 'EXPENDITURE',
+          category_type: 'expenditure',
         },
         rawWhere,
       });
