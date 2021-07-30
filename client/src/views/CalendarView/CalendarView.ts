@@ -5,7 +5,7 @@ import Calendar from '../../components/Calendar/Calendar';
 import './calendarView.scss';
 import formatPrice from '../../utils/formatPrice';
 
-export default class CalendarView extends Component {
+export default class CalendarView extends Component<Object> {
   constructor($target: HTMLElement, state: Object) {
     super($target, state);
     Model.subscribe('statechange', (data: any) => {
@@ -17,7 +17,7 @@ export default class CalendarView extends Component {
 
   mounted(): void {
     const $calendarBody = document.querySelector('.calendar-body');
-    new Calendar($calendarBody as HTMLElement, this.$state);
+    new Calendar($calendarBody as HTMLElement, this.state);
   }
 
   template(): string {

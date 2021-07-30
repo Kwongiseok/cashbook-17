@@ -1,14 +1,11 @@
-// interface DateState {
-//   year: number;
-//   month: number;
-// }
+import { HistoryState } from '../types';
 
-export default class Component {
+export default class Component<T> {
   $target: HTMLElement;
-  $state: Object;
-  constructor($target: HTMLElement, state: Object) {
+  state: T;
+  constructor($target: HTMLElement, state: T) {
     this.$target = $target;
-    this.$state = state;
+    this.state = state;
     this.setup();
     this.render();
   }
@@ -25,7 +22,7 @@ export default class Component {
   mounted(): void {} // 자식 컴포넌트 추가
   setEvent(): void {} // 이벤트 등록
   setState(newState: Object): void {
-    this.$state = { ...this.$state, ...newState };
+    this.state = { ...this.state, ...newState };
     this.render();
   }
 }
