@@ -14,7 +14,7 @@ class AuthController {
 
   getOAuthGitHub(req, res, next) {
     try {
-      res.redirect(process.env.GITHUB_SING_URL);
+      res.redirect(process.env.GITHUB_SIGN_URL);
     } catch (error) {
       console.error(error);
       next(error);

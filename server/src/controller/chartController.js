@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import isAuthenticate from '../middleware/isAuthenticate.js';
 import { cashBookService } from '../service/cashBookService.js';
 
 class ChartController {
@@ -7,15 +8,15 @@ class ChartController {
   }
 
   configureRoutes() {
-    this.router.get('/cashbooks', this.getMainChart.bind(this));
+    this.router.get('/cashbooks', isAuthenticate, this.getMainChart.bind(this));
     return this.router;
   }
 
   async getMainChart(req, res, next) {
     try {
       const { year, month } = req.query;
-      const { user_id } = req.session;
-      const datas = await cashBookService.getMainChart(user_id, year, month);
+      const user = req.user;
+      const datas = await cashBookService.getMainChartData(user, year, month);
       if (datas) {
         res.status(200).json(datas);
       } else {
