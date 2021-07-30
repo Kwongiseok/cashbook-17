@@ -21,6 +21,7 @@ class CashBookService {
       const { total } = category[key];
       returnDatas.push({ category: key, total, percent: this.convertToPercent(totalPrice, total) });
     });
+    returnDatas.sort((a, b) => b.percent - a.percent);
     return returnDatas;
   }
 
