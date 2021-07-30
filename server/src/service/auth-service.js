@@ -18,7 +18,7 @@ class AuthService {
     });
     user = await userRepository.findById(id);
     if (!user) {
-      userRepository.createUser(id);
+      userRepository.createUser(`${id}`);
     }
     return id;
   }

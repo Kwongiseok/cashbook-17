@@ -3,12 +3,12 @@ import { DatabaseError } from '../errors/base-errors.js';
 import Payment from '../models/Payment.js';
 
 class PaymentRepository {
-  async findAllById(id) {
+  async findAllById(user_id) {
     try {
       const payments = await Payment.findAll({
         attributes: 'id, name',
         where: {
-          user_id: id,
+          user_id,
         },
       });
       return payments;
@@ -49,10 +49,10 @@ class PaymentRepository {
     }
   }
 
-  async createPayment(id, name) {
+  async createPayment(user_id, name) {
     try {
       await Payment.create({
-        user_id: id,
+        user_id,
         name,
       });
     } catch (error) {

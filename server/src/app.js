@@ -10,6 +10,7 @@ import errorControl from './middleware/error-control.js';
 const PORT = serverConfig.PORT || 8080;
 
 const app = express();
+app.use(morgan('dev'));
 app.use(express.json());
 app.use(cors());
 app.use(
