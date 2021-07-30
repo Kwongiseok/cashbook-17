@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { authService } from '../service/authService.js';
+import { authService } from '../service/auth-service.js';
 
 class AuthController {
   constructor() {

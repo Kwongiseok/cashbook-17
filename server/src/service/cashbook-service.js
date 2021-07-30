@@ -1,4 +1,4 @@
-import { cashBookRepository } from '../repository/CashBookRepository.js';
+import { cashBookRepository } from '../repository/cashbook-repository.js';
 
 class CashBookService {
   async getMainChartData(id, year, month) {

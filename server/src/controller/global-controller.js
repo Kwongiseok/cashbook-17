@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { authController } from './authController.js';
-import { cashBookController } from './cashBookController.js';
-import { chartController } from './chartController.js';
+import { authController } from './auth-controller.js';
+import { cashBookController } from './cashbook-controller.js';
+import { chartController } from './chart-controller.js';
 
 const router = Router();
 const globalController = () => {

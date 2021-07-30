@@ -3,7 +3,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import session from 'express-session';
 import init from './models/index.js';
-import globalController from './controller/GlobalController.js';
+import globalController from './controller/global-controller.js';
 import path from 'path';
 
 const app = express();
@@ -22,7 +22,7 @@ app.use(
 app.use(express.static('../dist'));
 const PORT = process.env.PORT || 8080;
 
-app.get('/', (req, res) => res.sendFile('../dist/index.html'));
+app.get('/', (req, res) => res.send('hi'));
 
 app.use('/', globalController());
 

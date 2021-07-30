@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { userRepository } from '../repository/UserRepository.js';
+import { userRepository } from '../repository/user-repository.js';
 
 class AuthService {
   async signInGithub(code) {
