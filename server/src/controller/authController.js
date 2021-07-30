@@ -1,9 +1,7 @@
 import { Router } from 'express';
-import AuthService from '../service/authService.js';
+import { authService } from '../service/authService.js';
 
-const authService = new AuthService();
-
-export default class AuthController {
+class AuthController {
   constructor() {
     this.router = Router();
   }
@@ -14,11 +12,25 @@ export default class AuthController {
     return this.router;
   }
 
-  getOAuthGitHub(req, res) {
-    res.redirect(process.env.GITHUB_SING_URL);
+  getOAuthGitHub(req, res, next) {
+    try {
+      res.redirect(process.env.GITHUB_SING_URL);
+    } catch (error) {
+      console.error(error);
+      next(error);
+    }
   }
 
-  getOAuthGitHubCb(req, res) {
-    authService.signInGithub(req, res);
+  async getOAuthGitHubCb(req, res, next) {
+    try {
+      const { code } = req.query;
+      const id = await authService.signInGithub(code);
+      req.session.user = id;
+      res.redirect('/');
+    } catch (error) {
+      console.error(error);
+      next(error);
+    }
   }
 }
+export const authController = new AuthController();

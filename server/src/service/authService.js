@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { userRepository } from '../repository/UserRepository.js';
 
-export default class AuthService {
-  async signInGithub(req, res) {
-    const { code } = req.query;
+class AuthService {
+  async signInGithub(code) {
+    let user;
     const TOKEN_URL = `${process.env.GITHUB_TOKEN_URL}&code=${code}`;
     const { data } = await axios.post(TOKEN_URL);
     const searchParams = new URLSearchParams(data);
@@ -15,9 +15,12 @@ export default class AuthService {
         Authorization: `token ${accessToken}`,
       },
     });
-    const user = await userRepository.findById(id);
-    if (!user) userRepository.createUser(id);
-    req.session.user = user;
-    res.redirect('/');
+    user = await userRepository.findById(id);
+    if (!user) {
+      userRepository.createUser(id);
+    }
+    return id;
   }
 }
+
+export const authService = new AuthService();
