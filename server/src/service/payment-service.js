@@ -1,6 +1,6 @@
 import { BadRequestError, ForbiddenError } from '../errors/client-errors.js';
 import { paymentRepository } from '../repository/payment-repository.js';
-import isStringType from '../utils/is-string-type.js';
+import validatePayment from '../utils/payment-validate.js';
 
 class PaymentService {
   async getPaymentsById(user_id) {
@@ -9,7 +9,7 @@ class PaymentService {
   }
 
   async createPayment(user_id, name) {
-    isStringType(name);
+    validatePayment(name);
     await this.isDuplicate(user_id, name);
     await paymentRepository.createPayment(user_id, name);
   }
