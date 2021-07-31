@@ -9,7 +9,7 @@ class AuthController {
   }
 
   configureRoutes() {
-    this.router.get('/github', wrapAsync(this.getOAuthGitHub.bind(this)));
+    this.router.get('/github', this.getOAuthGitHub.bind(this));
     this.router.get('/github/callback', wrapAsync(this.getOAuthGitHubCb.bind(this)));
     return this.router;
   }
