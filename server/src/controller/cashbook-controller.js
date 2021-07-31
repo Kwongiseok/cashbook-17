@@ -17,15 +17,15 @@ class CashBookController {
   }
 
   async getCashbooks(req, res) {
+    let datas;
     const user_id = req.user_id;
     const { year, month, category } = req.query;
     if (category) {
-      const datas = await cashBookService.getCashbooksDataFromCategory(user_id, year, month, category);
-      res.status(200).json(datas);
+      datas = await cashBookService.getCashbooksDataFromCategory(user_id, year, month, category);
     } else {
-      const datas = await cashBookService.getCashbooksData(user_id, year, month);
-      res.status(200).json(datas);
+      datas = await cashBookService.getCashbooksData(user_id, year, month);
     }
+    res.status(200).json(datas);
   }
 
   async createCashbook(req, res) {
