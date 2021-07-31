@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { githubConfig } from '../config/github.js';
 import { authService } from '../service/auth-service.js';
+import wrapAsync from '../utils/wrap-async.js';
 
 class AuthController {
   constructor() {
@@ -8,30 +9,20 @@ class AuthController {
   }
 
   configureRoutes() {
-    this.router.get('/github', this.getOAuthGitHub.bind(this));
-    this.router.get('/github/callback', this.getOAuthGitHubCb.bind(this));
+    this.router.get('/github', wrapAsync(this.getOAuthGitHub.bind(this)));
+    this.router.get('/github/callback', wrapAsync(this.getOAuthGitHubCb.bind(this)));
     return this.router;
   }
 
   getOAuthGitHub(req, res, next) {
-    try {
-      res.redirect(githubConfig.signURL);
-    } catch (error) {
-      console.error(error);
-      next(error);
-    }
+    res.redirect(githubConfig.signURL);
   }
 
   async getOAuthGitHubCb(req, res, next) {
-    try {
-      const { code } = req.query;
-      const id = await authService.signInGithub(code);
-      req.session.user = `${id}`;
-      res.redirect('/');
-    } catch (error) {
-      console.error(error);
-      next(error);
-    }
+    const { code } = req.query;
+    const id = await authService.signInGithub(code);
+    req.session.user = `${id}`;
+    res.redirect('/');
   }
 }
 export const authController = new AuthController();
