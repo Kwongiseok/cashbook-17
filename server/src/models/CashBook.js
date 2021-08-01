@@ -1,4 +1,4 @@
-import { Model, DataTypes } from '@kwongiseok/woowahan-orm';
+import { Model, DataTypes } from 'woowahan-orm';
 
 export default class CashBook extends Model {
   static init() {
