@@ -11,7 +11,7 @@ class CashBookController {
   configureRoutes() {
     this.router.get('/', isAuthenticate, wrapAsync(this.getCashbooks.bind(this)));
     this.router.post('/', isAuthenticate, wrapAsync(this.createCashbook.bind(this)));
-    this.router.patch('/', isAuthenticate, wrapAsync(this.updateCashbook.bind(this)));
+    this.router.patch('/:id', isAuthenticate, wrapAsync(this.updateCashbook.bind(this)));
 
     return this.router;
   }
@@ -35,7 +35,7 @@ class CashBookController {
     res.sendStatus(201);
   }
 
-  async updateCashbook() {
+  async updateCashbook(req, res) {
     const user_id = req.user_id;
     const { id } = req.params;
     const body = req.body;

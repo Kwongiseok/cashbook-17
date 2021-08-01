@@ -1,4 +1,4 @@
-import WoowahanORM from 'woowahan-orm';
+import WoowahanORM from '@kwongiseok/woowahan-orm';
 import User from './User.js';
 import CashBook from './CashBook.js';
 import Payment from './Payment.js';

@@ -68,9 +68,24 @@ class CashBookRepository {
     }
   }
 
+  async findOneById(id) {
+    try {
+      const cashbook = await CashBook.findOne({
+        attributes: '*',
+        where: {
+          id,
+        },
+      });
+      return cashbook;
+    } catch (error) {
+      console.error(error);
+      throw new DatabaseError(CASHBOOK_DB_ERROR);
+    }
+  }
+
   async findOwnerById(id) {
     try {
-      const user_id = await CashBook.findOne({
+      const { user_id } = await CashBook.findOne({
         attributes: 'user_id',
         where: {
           id,
@@ -85,10 +100,11 @@ class CashBookRepository {
 
   async updateCashbook(id, body) {
     try {
-      await CashBook.update({
-        id,
+      const new_body = {
+        id: parseInt(id),
         ...body,
-      });
+      };
+      await CashBook.update(new_body);
     } catch (error) {
       console.error(error);
       throw new DatabaseError(CASHBOOK_DB_ERROR);

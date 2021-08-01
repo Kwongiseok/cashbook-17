@@ -1,4 +1,4 @@
-import { Model, DataTypes } from 'woowahan-orm';
+import { Model, DataTypes } from '@kwongiseok/woowahan-orm';
 
 export default class Payment extends Model {
   static init() {

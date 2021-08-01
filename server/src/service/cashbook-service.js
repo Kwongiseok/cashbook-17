@@ -1,6 +1,6 @@
 import { BadRequestError, ForbiddenError } from '../errors/client-errors.js';
 import { cashBookRepository } from '../repository/cashbook-repository.js';
-import { validateCashbook, validateCashBookToCreate } from '../utils/cashbook-validate.js';
+import { validateCashBookToCreate, validateCashbookToUpdate } from '../utils/cashbook-validate.js';
 import validateMonth from '../utils/month-validate.js';
 
 class CashBookService {
@@ -47,7 +47,8 @@ class CashBookService {
 
   async updateCashbook(user_id, cashbook_id, body) {
     await this.isMine(user_id, cashbook_id);
-    validateCashbook(body);
+    const origin = await cashBookRepository.findOneById(cashbook_id);
+    validateCashbookToUpdate(origin, body);
     await cashBookRepository.updateCashbook(cashbook_id, body);
   }
 
@@ -55,6 +56,7 @@ class CashBookService {
     const cashbook_user_id = await cashBookRepository.findOwnerById(cashbook_id);
     if (user_id !== cashbook_user_id) throw new ForbiddenError('권한이 없습니다.');
   }
+
   convertToPercent(totalPrice, targetPrice) {
     const number = (targetPrice / totalPrice).toFixed(2);
     return number * 100;
