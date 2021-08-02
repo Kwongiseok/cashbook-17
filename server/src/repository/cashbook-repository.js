@@ -5,10 +5,11 @@ import CashBook from '../models/CashBook.js';
 class CashBookRepository {
   async createCashbook(user_id, body) {
     try {
-      await CashBook.create({
+      const cashbook = await CashBook.create({
         user_id,
         ...body,
       });
+      return cashbook;
     } catch (error) {
       console.error(error);
       throw new DatabaseError(USER_DB_ERROR);

@@ -31,8 +31,8 @@ class CashBookController {
   async createCashbook(req, res) {
     const user_id = req.user_id;
     const body = req.body;
-    await cashBookService.createCashbook(user_id, body);
-    res.sendStatus(201);
+    const data = await cashBookService.createCashbook(user_id, body);
+    res.status(201).json(data);
   }
 
   async updateCashbook(req, res) {

@@ -6,7 +6,7 @@ import validateMonth from '../utils/month-validate.js';
 class CashBookService {
   async createCashbook(user_id, body) {
     validateCashBookToCreate(body);
-    await cashBookRepository.createCashbook(user_id, body);
+    return await cashBookRepository.createCashbook(user_id, body);
   }
 
   async getCashbooksData(user_id, year, month) {

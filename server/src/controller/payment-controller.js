@@ -24,8 +24,8 @@ class PaymentController {
   async createPayment(req, res, next) {
     const user_id = req.user_id;
     const { name } = req.body;
-    await paymentService.createPayment(user_id, name);
-    res.sendStatus(201);
+    const data = await paymentService.createPayment(user_id, name);
+    res.status(201).json(data);
   }
 
   async deletePayment(req, res, next) {
