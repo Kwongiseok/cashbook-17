@@ -1,15 +1,15 @@
 import Component from '../../utils/Component';
 import './calendar.scss';
-import { CalendarDate, HistoryState } from '../../types';
+import { CalendarDataType, CalendarDate, CalendarState } from '../../types';
 import formatPrice from '../../utils/formatPrice';
 
-export default class Calendar extends Component<HistoryState> {
-  constructor($target: HTMLElement, state: HistoryState) {
+export default class Calendar extends Component<CalendarState> {
+  constructor($target: HTMLElement, state: CalendarState) {
     super($target, state);
   }
   template(): string {
     if (this.state) {
-      const { year, month } = this.state as HistoryState;
+      const { year, month } = this.state as CalendarState;
       return `
       ${this.convertCalendarDaysToHTML(year as number, (month as number) - 1)}
     `;
