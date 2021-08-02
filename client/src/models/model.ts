@@ -51,4 +51,5 @@ async function fetchCashbookData(historyState: HistoryState) {
     Model.publish('updateHistory', { ...historyState, total, data: datas });
   }
 }
+
 export default Model;

@@ -4,17 +4,18 @@ export interface CalendarDate {
   thisMonthLastDate: Date;
   nextMonthFirstDate: Date;
 }
-
-export type MainChartData = HistoryState & {
-  total: number;
-  data: ExpenditureDataList;
-};
-
 export type HistoryState = {
   path?: string;
   year?: number;
   month?: number;
   type?: string;
+};
+export type MainChartData = HistoryState & {
+  total: number;
+  data: ExpenditureDataList;
+};
+export type HeaderState = HistoryState & {
+  isLoggedIn: boolean;
 };
 export type ExpenditureCategoryType = {
   [key: string]: string;

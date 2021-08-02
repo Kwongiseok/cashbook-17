@@ -4,6 +4,7 @@ import Model from '../src/models/model';
 import CalendarView from './views/CalendarView/CalendarView';
 import { listen } from '../src/utils/customEvent';
 import ChartView from './views/ChartView/ChartView';
+import { getAuth } from './apis/authAPI';
 
 export default class Router {
   $wrapper: HTMLElement;
@@ -20,11 +21,18 @@ export default class Router {
 
   stateChangeHandler(event: CustomEvent) {
     history.pushState(event.detail, '', event.detail.path);
-    Model.publish('statechange', history.state);
+    const isLoggedIn = this.checkIsLogged;
+    Model.publish('statechange', { ...history.state, isLoggedIn });
   }
 
   popstateHandler() {
     if (history.state === null) return;
-    Model.publish('statechange', history.state);
+    const isLoggedIn = this.checkIsLogged;
+    Model.publish('statechange', { ...history.state, isLoggedIn });
+  }
+
+  async checkIsLogged() {
+    const result = await getAuth();
+    return result;
   }
 }
