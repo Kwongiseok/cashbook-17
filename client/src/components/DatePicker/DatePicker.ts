@@ -10,33 +10,37 @@ export default class DatePicker extends Component<HistoryState> {
   }
 
   mounted(): void {
-    const $days = document.querySelector('.datePicker-days') as HTMLElement;
-    const $body = document.querySelector('.datePicker-body') as HTMLElement;
-    const { year, month } = this.state;
-    $days.innerHTML = this.convertDayOfTheWeekToHTML();
-    $body.innerHTML = this.convertCalendarDaysToHTML(year as number, (month as number) - 1);
+    if (this.state) {
+      const { year, month } = this.state;
+      const $days = document.querySelector('.datePicker-days') as HTMLElement;
+      const $body = document.querySelector('.datePicker-body') as HTMLElement;
+      $days.innerHTML = this.convertDayOfTheWeekToHTML();
+      $body.innerHTML = this.convertCalendarDaysToHTML(year as number, (month as number) - 1);
+    }
   }
 
   setEvent(): void {
-    const $leftButton = document.querySelector('.datePicker-left') as HTMLElement;
-    const $rightButton = document.querySelector('.datePicker-right') as HTMLElement;
-    const $body = document.querySelector('.datePicker-body') as HTMLElement;
-    $leftButton.addEventListener('click', this.onClickLeft.bind(this));
-    $rightButton.addEventListener('click', this.onClickRight.bind(this));
-    $body.addEventListener('click', (e: Event) => {
-      const target = e.target as HTMLElement;
-      const el = target.closest('.now-month') as HTMLElement;
-      if (el && el.dataset.date) {
-        let month = String(this.state.month),
-          day = String(el.dataset.date);
-        if (Number(month) < 10) month = '0' + month;
-        if (Number(day) < 10) day = '0' + day;
-        triggerByElement(this.$target, 'date-change', {
-          date: `${this.state.year}-${month}-${day}`,
-        });
-      }
-      return;
-    });
+    if (this.state) {
+      const $leftButton = document.querySelector('.datePicker-left') as HTMLElement;
+      const $rightButton = document.querySelector('.datePicker-right') as HTMLElement;
+      const $body = document.querySelector('.datePicker-body') as HTMLElement;
+      $leftButton.addEventListener('click', this.onClickLeft.bind(this));
+      $rightButton.addEventListener('click', this.onClickRight.bind(this));
+      $body.addEventListener('click', (e: Event) => {
+        const target = e.target as HTMLElement;
+        const el = target.closest('.now-month') as HTMLElement;
+        if (el && el.dataset.date) {
+          let month = String(this.state.month),
+            day = String(el.dataset.date);
+          if (Number(month) < 10) month = '0' + month;
+          if (Number(day) < 10) day = '0' + day;
+          triggerByElement(this.$target, 'date-change', {
+            date: `${this.state.year}-${month}-${day}`,
+          });
+        }
+        return;
+      });
+    }
   }
 
   template(): string {
