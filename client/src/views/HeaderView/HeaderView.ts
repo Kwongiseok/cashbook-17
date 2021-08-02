@@ -15,7 +15,7 @@ export default class HeaderView extends Component<HeaderState> {
     super($target, state);
     Model.subscribe('statechange', () => {
       this.handleIconWhenChangeState(history.state.path);
-      this.handleAuthIcon(this.state.isLoggedIn);
+      this.handleAuthIcon(this.state.isLoggedIn as boolean);
     });
   }
 

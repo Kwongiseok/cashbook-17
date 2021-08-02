@@ -4,13 +4,16 @@ import { DAY_OF_THE_WEEK } from '../../constants/days';
 import Calendar from '../../components/Calendar/Calendar';
 import './calendarView.scss';
 import formatPrice from '../../utils/formatPrice';
+import { INCOME } from '../../constants/category';
+import { CalendarDataType, CalendarDayType, CalendarState, CashbookType } from '../../types';
 
-export default class CalendarView extends Component<Object> {
-  constructor($target: HTMLElement, state: Object) {
+export default class CalendarView extends Component<CalendarState> {
+  constructor($target: HTMLElement, state: CalendarState) {
     super($target, state);
-    Model.subscribe('statechange', (data: any) => {
+    Model.subscribe('updateHistory', (data: any) => {
       if (data.path !== '/calendar') return;
-      this.setState(data);
+      const newState = this.processData(data);
+      this.setState(newState);
     });
   }
   setup() {}
@@ -21,6 +24,7 @@ export default class CalendarView extends Component<Object> {
   }
 
   template(): string {
+    const { total, expenditureTotal, incomeTotal } = this.state;
     return `<div class="calendar-container">
     <ul class="calendar-header">
       ${this.convertDayOfTheWeekToHTML()}
@@ -28,11 +32,11 @@ export default class CalendarView extends Component<Object> {
     <div class="calendar-body"></div>
     <div class="calendar-footer">
       <div class="calendar-footer-left">
-        <span class="calendar-total-income">총 수입: ${formatPrice(1822480)}</span>
-        <span class="calendar-total-expenditure">총 지출: ${formatPrice(834640)}</span>
+        <span class="calendar-total-income">총 수입: ${formatPrice(incomeTotal)}</span>
+        <span class="calendar-total-expenditure">총 지출: ${formatPrice(expenditureTotal)}</span>
       </div>
       <div class="calendar-footer-right">
-        <span>총계: ${formatPrice(987840)}</span>
+        <span>총계: ${formatPrice(total)}</span>
       </div>
     </div>
     </div>`;
@@ -42,5 +46,35 @@ export default class CalendarView extends Component<Object> {
 
   convertDayOfTheWeekToHTML(): string {
     return DAY_OF_THE_WEEK.map((day) => `<li class="calendar-header-day">${day}</li>`).join('');
+  }
+
+  processData(updateData: any): CalendarState {
+    const data: CalendarDataType = {};
+    let [total, incomeTotal, expenditureTotal] = [0, 0, 0];
+    updateData.data.forEach((item: CashbookType) => {
+      const price = item.price as number;
+      const key = new Date(item.date as string).getDate();
+      if (!data[key]) {
+        data[key] = this.initialCalendarData();
+      }
+      if (item.category_type === INCOME) {
+        data[key].income += price;
+        incomeTotal += price;
+      } else {
+        data[key].expenditure += price;
+        expenditureTotal += price;
+      }
+      data[key].total += price;
+      total += price;
+    });
+    return { ...updateData, data, total, expenditureTotal, incomeTotal };
+  }
+
+  initialCalendarData(): CalendarDayType {
+    return {
+      income: 0,
+      expenditure: 0,
+      total: 0,
+    };
   }
 }

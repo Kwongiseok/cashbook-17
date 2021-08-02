@@ -10,10 +10,16 @@ export type HistoryState = {
   month?: number;
   type?: string;
 };
-export type MainChartData = HistoryState & {
+export type MainChartState = HistoryState & {
   total: number;
   data: ExpenditureDataList;
 };
+export type CalendarState = HistoryState & {
+  total: number;
+  expenditureTotal: number;
+  incomeTotal: number;
+};
+
 export type HeaderState = HistoryState & {
   isLoggedIn: boolean;
 };
@@ -48,9 +54,21 @@ export type CATEGORY_TYPE = 'expenditure' | 'income';
 export type CashbookType = {
   id?: number;
   category?: CATEGORY;
-  categoryType?: CATEGORY_TYPE;
+  category_type?: CATEGORY_TYPE;
   memo?: string;
   payment?: string;
   price?: number;
   date?: string;
 };
+
+export type CalendarDayType = {
+  income: number;
+  expenditure: number;
+  total: number;
+};
+
+export type CalendarDataType = {
+  [key: string]: CalendarDayType;
+};
+
+export type FetchDataType = Array<CashbookType>;

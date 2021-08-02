@@ -1,5 +1,5 @@
 import { HistoryState } from '../types';
-import { getMainChartData } from '../apis/cashbookAPI';
+import { getMainChartData, getMonthData } from '../apis/cashbookAPI';
 
 type Subscription = {
   [key: string]: Array<Function>;
@@ -46,9 +46,13 @@ const Model = {
 Model.subscribe('statechange', fetchCashbookData);
 
 async function fetchCashbookData(historyState: HistoryState) {
+  const [year, month] = [historyState.year as Number, historyState.month as Number];
   if (historyState.path === '/chart') {
-    const { total, datas } = await getMainChartData(historyState.year as Number, historyState.month as Number);
+    const { total, datas } = await getMainChartData(year, month);
     Model.publish('updateHistory', { ...historyState, total, data: datas });
+  } else {
+    const data = await getMonthData(year, month);
+    Model.publish('updateHistory', { ...historyState, data });
   }
 }
 

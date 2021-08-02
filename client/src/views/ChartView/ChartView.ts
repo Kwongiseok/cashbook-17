@@ -1,14 +1,14 @@
-import { MainChartData } from '../../types';
+import { MainChartState } from '../../types';
 import BarChart from '../../components/BarChart/BarChart';
 import DonutChart from '../../components/DonutChart/DonutChart';
 import Model from '../../models/model';
 import Component from '../../utils/Component';
 import './chartView.scss';
 
-export default class ChartView extends Component<MainChartData> {
-  constructor($target: HTMLElement, state: MainChartData) {
+export default class ChartView extends Component<MainChartState> {
+  constructor($target: HTMLElement, state: MainChartState) {
     super($target, state);
-    Model.subscribe('updateHistory', (data: MainChartData) => {
+    Model.subscribe('updateHistory', (data: MainChartState) => {
       if (data.path !== '/chart') return;
       this.setState(data);
     });

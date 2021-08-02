@@ -1,12 +1,12 @@
 import { ROLLING_NUMBER } from '../../constants/rollingNumber';
 import { EXPENDITURE_CATEGORY } from '../../constants/category';
-import { ExpenditureData, ExpenditureDataList, MainChartData } from '../../types';
+import { ExpenditureData, ExpenditureDataList, MainChartState } from '../../types';
 import Component from '../../utils/Component';
 import formatPrice from '../../utils/formatPrice';
 import './barChart.scss';
 
-export default class BarChart extends Component<MainChartData> {
-  constructor($target: HTMLElement, state: MainChartData) {
+export default class BarChart extends Component<MainChartState> {
+  constructor($target: HTMLElement, state: MainChartState) {
     super($target, state);
   }
 

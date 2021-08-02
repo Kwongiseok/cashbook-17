@@ -1,5 +1,5 @@
 import { EXPENDITURE_CATEGORY } from '../../constants/category';
-import { ExpenditureDataList, HistoryState, MainChartData } from '../../types';
+import { ExpenditureDataList, HistoryState, MainChartState } from '../../types';
 import Component from '../../utils/Component';
 import './donutChart.scss';
 
@@ -13,8 +13,8 @@ const dummy = [
   { category: '미분류', percent: 1, total: 10200 },
 ];
 
-export default class DonutChart extends Component<MainChartData> {
-  constructor($target: HTMLElement, state: MainChartData) {
+export default class DonutChart extends Component<MainChartState> {
+  constructor($target: HTMLElement, state: MainChartState) {
     super($target, state);
   }
   mounted(): void {

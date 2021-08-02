@@ -63,10 +63,8 @@ export default class Calendar extends Component<HistoryState> {
             calendar-day now-month
           "
         >
-          <p class="calendar-income">${formatPrice(43112)}</p>
-          <p class="calendar-expenditure">${formatPrice(312341)}</p>
-          <p class="calendar-total">${formatPrice(271212)}</p>
-          <span>${d + 1}</span>
+        ${this.pushHistory(d + 1)}
+        <span>${d + 1}</span>
         </div>`
       );
     }
@@ -90,6 +88,16 @@ export default class Calendar extends Component<HistoryState> {
         </div>`
       );
     }
+  }
+
+  pushHistory(date: number): string {
+    if (!this.state.data[date]) return '';
+    const { income, expenditure, total } = this.state.data[date];
+    return `
+    <p class="calendar-income">${formatPrice(income)}</p>
+    <p class="calendar-expenditure">${formatPrice(expenditure)}</p>
+    <p class="calendar-total">${formatPrice(total)}</p>
+    `;
   }
 
   mounted() {}
