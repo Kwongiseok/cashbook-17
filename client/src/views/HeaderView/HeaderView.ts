@@ -9,13 +9,15 @@ import DOCS_ICON_PATH from '../../../public/images/docsIcon.svg';
 import GITHUB_ICON_PATH from '../../../public/images/githubIcon.svg';
 import DOOR_ICON_PATH from '../../../public/images/doorIcon.svg';
 import Model from '../../models/model';
+import { getAuth, logout } from '../../apis/authAPI';
+import { GITHUB_SIGN_URL } from '../../constants/environment';
 
 export default class HeaderView extends Component<HeaderState> {
   constructor($target: HTMLElement, state: HeaderState) {
     super($target, state);
     Model.subscribe('statechange', () => {
       this.handleIconWhenChangeState(history.state.path);
-      this.handleAuthIcon(this.state.isLoggedIn as boolean);
+      this.handleAuthIcon();
     });
   }
 
@@ -45,6 +47,8 @@ export default class HeaderView extends Component<HeaderState> {
     const $docsButton = document.querySelector('.header-docs') as HTMLElement;
     const $calendarButton = document.querySelector('.header-calendar') as HTMLElement;
     const $chartButton = document.querySelector('.header-chart') as HTMLElement;
+    const $loginButton = document.querySelector('.header-login') as HTMLElement;
+    const $logoutButton = document.querySelector('.header-logout') as HTMLElement;
 
     $homeButton.addEventListener('click', () => {
       trigger('statechange', { ...history.state, path: '/' });
@@ -57,6 +61,15 @@ export default class HeaderView extends Component<HeaderState> {
     });
     $chartButton.addEventListener('click', () => {
       trigger('statechange', { ...history.state, path: '/chart' });
+    });
+
+    $loginButton.addEventListener('click', async () => {
+      location.href = GITHUB_SIGN_URL as string;
+    });
+
+    $logoutButton.addEventListener('click', async () => {
+      await logout();
+      this.handleAuthIcon();
     });
   }
 
@@ -79,7 +92,8 @@ export default class HeaderView extends Component<HeaderState> {
     }
   }
 
-  handleAuthIcon(isLoggedIn: boolean): void {
+  async handleAuthIcon() {
+    const isLoggedIn = await this.checkIsLogged();
     const $login = document.querySelector('.header-login') as HTMLElement;
     const $logout = document.querySelector('.header-logout') as HTMLElement;
     $login.style.display = 'none';
@@ -89,5 +103,9 @@ export default class HeaderView extends Component<HeaderState> {
     } else {
       $login.style.display = 'block';
     }
+  }
+  async checkIsLogged() {
+    const result = await getAuth();
+    return result;
   }
 }
