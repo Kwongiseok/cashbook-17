@@ -1,3 +1,4 @@
+import { HistoryState } from '../types';
 import { getMainChartData } from '../apis/cashbookAPI';
 
 type Subscription = {
@@ -18,7 +19,7 @@ const Model = {
    * - event.publish('event event1 event2', { data: 'customData' });
    */
 
-  publish(event: string, data?: object): void {
+  publish(event: string, data?: object | Array<Object>): void {
     const events = this.subscriptions[event];
     events.forEach((cb) => cb(data));
   },
@@ -44,10 +45,10 @@ const Model = {
 
 Model.subscribe('statechange', fetchCashbookData);
 
-async function fetchCashbookData(path: string, year: Number, month: Number) {
-  if (path === '/chart') {
-    const data = await getMainChartData(year, month);
-    console.log(data);
+async function fetchCashbookData(historyState: HistoryState) {
+  if (historyState.path === '/chart') {
+    const { total, datas } = await getMainChartData(historyState.year as Number, historyState.month as Number);
+    Model.publish('updateHistory', { ...historyState, total, data: datas });
   }
 }
 export default Model;

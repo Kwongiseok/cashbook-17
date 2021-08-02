@@ -7,7 +7,7 @@ import './chartView.scss';
 export default class ChartView extends Component<Object> {
   constructor($target: HTMLElement, state: Object) {
     super($target, state);
-    Model.subscribe('statechange', (data: any) => {
+    Model.subscribe('updateHistory', (data: any) => {
       if (data.path !== '/chart') return;
       this.setState(data);
     });

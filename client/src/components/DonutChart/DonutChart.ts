@@ -18,13 +18,15 @@ export default class DonutChart extends Component<HistoryState> {
     super($target, state);
   }
   mounted(): void {
-    const $container = document.querySelector('.donut-container');
-    const $svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    $svg.setAttribute('width', '100%');
-    $svg.setAttribute('height', '100%');
-    $svg.setAttribute('viewBox', '0 0 100 100');
-    this.appendCircle($svg, dummy);
-    $container?.appendChild($svg);
+    if (this.state.data) {
+      const $container = document.querySelector('.donut-container');
+      const $svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      $svg.setAttribute('width', '100%');
+      $svg.setAttribute('height', '100%');
+      $svg.setAttribute('viewBox', '0 0 100 100');
+      this.appendCircle($svg, this.state.data);
+      $container?.appendChild($svg);
+    }
   }
   template(): string {
     return '<div class="donut-container"></div>';

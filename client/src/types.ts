@@ -1,3 +1,15 @@
+export interface CalendarDate {
+  prevMonthLastDate: Date;
+  thisMonthFirstDate: Date;
+  thisMonthLastDate: Date;
+  nextMonthFirstDate: Date;
+}
+
+export type MainChartData = HistoryState & {
+  total: number;
+  data: ExpenditureDataList;
+};
+
 export type HistoryState = {
   path?: string;
   year?: number;
@@ -10,13 +22,6 @@ export type ExpenditureCategoryType = {
 
 export type ExpenditureData = { category: string; percent: number; total: number };
 export type ExpenditureDataList = Array<ExpenditureData>;
-
-export interface CalendarDate {
-  prevMonthLastDate: Date;
-  thisMonthFirstDate: Date;
-  thisMonthLastDate: Date;
-  nextMonthFirstDate: Date;
-}
 
 export type CashcooksResponse = {
   totalElements: number;

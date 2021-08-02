@@ -23,7 +23,7 @@ class CashBookService {
 
   async getMainChartData(user_id, year, month) {
     validateMonth(month);
-    const returnDatas = [];
+    const expenditureList = [];
     const datas = await cashBookRepository.findAllExpenditureByMonth(user_id, year, month);
     const category = {};
     let totalPrice = 0;
@@ -39,9 +39,13 @@ class CashBookService {
     });
     Object.keys(category).forEach((key) => {
       const { total } = category[key];
-      returnDatas.push({ category: key, total, percent: this.convertToPercent(totalPrice, total) });
+      expenditureList.push({ category: key, total: -total, percent: this.convertToPercent(totalPrice, total) });
     });
-    returnDatas.sort((a, b) => b.percent - a.percent);
+    expenditureList.sort((a, b) => b.percent - a.percent);
+    const returnDatas = {
+      total: -totalPrice,
+      datas: expenditureList,
+    };
     return returnDatas;
   }
 
@@ -59,7 +63,8 @@ class CashBookService {
 
   convertToPercent(totalPrice, targetPrice) {
     const number = (targetPrice / totalPrice).toFixed(2);
-    return number * 100;
+    const value = Math.round(number * 100);
+    return value;
   }
 }
 
