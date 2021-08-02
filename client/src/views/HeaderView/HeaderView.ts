@@ -6,6 +6,7 @@ import { HistoryState } from '../../types';
 import CALENDAR_ICON_PATH from '../../../public/images/calendarIcon.svg';
 import CHART_ICON_PATH from '../../../public/images/chartIcon.svg';
 import DOCS_ICON_PATH from '../../../public/images/docsIcon.svg';
+import GITHUB_ICON_PATH from '../../../public/images/githubIcon.svg';
 import Model from '../../models/model';
 
 export default class HeaderView extends Component<HistoryState> {
@@ -24,9 +25,12 @@ export default class HeaderView extends Component<HistoryState> {
       <button class="header-home">우아한 가계부</button>
       <div class="header-navigator-wrapper"></div>
       <div class="header-icon-container">
-        <button class="header-button header-docs"><img class="header-icon docs-icon" src="${DOCS_ICON_PATH}"/></button>
-        <button class="header-button header-calendar"><img class="header-icon calendar-icon" src="${CALENDAR_ICON_PATH}"/></button>
-        <button class="header-button header-chart"><img class="header-icon chart-icon" src="${CHART_ICON_PATH}"/></button>
+        <div class="header-button-container"> 
+          <button class="header-button header-docs"><img class="header-icon docs-icon" src="${DOCS_ICON_PATH}"/></button>
+          <button class="header-button header-calendar"><img class="header-icon calendar-icon" src="${CALENDAR_ICON_PATH}"/></button>
+          <button class="header-button header-chart"><img class="header-icon chart-icon" src="${CHART_ICON_PATH}"/></button>
+        </div>
+        <button class="header-button header-login"><img class="header-icon login-icon" src="${GITHUB_ICON_PATH}"></button>
       </div>
     </div>`;
   }

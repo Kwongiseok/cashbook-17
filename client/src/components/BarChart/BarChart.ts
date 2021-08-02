@@ -40,7 +40,6 @@ export default class BarChart extends Component<MainChartData> {
   }
 
   template(): string {
-    console.log(this.state);
     return `
     <div class="bar-total-expenditure"> 
       <span class="bar-total-expenditure-title">이번 달 지출 금액 :</span>
