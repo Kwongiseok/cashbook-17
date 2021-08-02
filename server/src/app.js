@@ -12,7 +12,12 @@ const PORT = serverConfig.PORT || 8080;
 const app = express();
 app.use(morgan('dev'));
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: 'http://127.0.0.1:8080',
+    credentials: true,
+  })
+);
 app.use(
   session({
     HttpOnly: true,
@@ -25,7 +30,7 @@ app.use(
 
 app.use(express.static('../dist'));
 
-app.get('/', (req, res) => res.send('hi'));
+app.get('/', (req, res) => res.sendFile('../dist/index.html'));
 
 app.use('/', globalController());
 
