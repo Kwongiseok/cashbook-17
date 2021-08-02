@@ -94,9 +94,9 @@ export default class Calendar extends Component<CalendarState> {
     if (!this.state.data[date]) return '';
     const { income, expenditure, total } = this.state.data[date];
     return `
-    <p class="calendar-income">${formatPrice(income)}</p>
-    <p class="calendar-expenditure">${formatPrice(expenditure)}</p>
-    <p class="calendar-total">${formatPrice(total)}</p>
+    <p class="calendar-income">+${formatPrice(income)}</p>
+    <p class="calendar-expenditure">-${formatPrice(expenditure)}</p>
+    <p class="calendar-total">${total >= 0 ? formatPrice(total) : '-' + formatPrice(total)}</p>
     `;
   }
 

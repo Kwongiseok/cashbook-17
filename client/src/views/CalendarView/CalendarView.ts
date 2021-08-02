@@ -32,11 +32,11 @@ export default class CalendarView extends Component<CalendarState> {
     <div class="calendar-body"></div>
     <div class="calendar-footer">
       <div class="calendar-footer-left">
-        <span class="calendar-total-income">총 수입: ${formatPrice(incomeTotal)}</span>
-        <span class="calendar-total-expenditure">총 지출: ${formatPrice(expenditureTotal)}</span>
+        <span class="calendar-total-income">총 수입: ${this.formatTotal(incomeTotal)}</span>
+        <span class="calendar-total-expenditure">총 지출: ${this.formatTotal(expenditureTotal)}</span>
       </div>
       <div class="calendar-footer-right">
-        <span>총계: ${formatPrice(total)}</span>
+        <span>총계: ${this.formatTotal(total)}</span>
       </div>
     </div>
     </div>`;
@@ -46,6 +46,13 @@ export default class CalendarView extends Component<CalendarState> {
 
   convertDayOfTheWeekToHTML(): string {
     return DAY_OF_THE_WEEK.map((day) => `<li class="calendar-header-day">${day}</li>`).join('');
+  }
+
+  formatTotal(total: number) {
+    if (total < 0) {
+      return '-' + formatPrice(total);
+    }
+    return '+' + formatPrice(total);
   }
 
   processData(updateData: any): CalendarState {
