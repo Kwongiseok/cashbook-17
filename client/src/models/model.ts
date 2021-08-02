@@ -1,3 +1,5 @@
+import { getMainChartData } from '../apis/cashbookAPI';
+
 type Subscription = {
   [key: string]: Array<Function>;
 };
@@ -39,4 +41,13 @@ const Model = {
     }
   },
 };
+
+Model.subscribe('statechange', fetchCashbookData);
+
+async function fetchCashbookData(path: string, year: Number, month: Number) {
+  if (path === '/chart') {
+    const data = await getMainChartData(year, month);
+    console.log(data);
+  }
+}
 export default Model;
