@@ -3,12 +3,12 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const { DefinePlugin } = require('webpack');
-const dotenv = require('dotenv');
 const path = require('path');
+const dotenv = require('dotenv');
 
 dotenv.config({ path: './.env' });
 
-module.expçorts = {
+module.exports = {
   entry: './src/index.ts',
   output: {
     path: path.join(__dirname, '../dist'),

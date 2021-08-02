@@ -9,7 +9,7 @@
     "build": "webpack"
   },
   "keywords": [],
-  "author": "",
+  "author": "@Kwongiseok, @LeagueLugas",
   "license": "ISC",
   "dependencies": {
     "@babel/cli": "^7.14.5",

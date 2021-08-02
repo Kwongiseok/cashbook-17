@@ -16,7 +16,6 @@ class AuthController {
   }
 
   async checkLoggedIn(req, res) {
-    console.log(req.session);
     if (req.session.user) {
       res.sendStatus(200);
     } else {
