@@ -1,18 +1,17 @@
 import WoowahanORM from 'woowahan-orm';
-import dotenv from 'dotenv';
 import User from './User.js';
 import CashBook from './CashBook.js';
 import Payment from './Payment.js';
+import { dbConfig } from '../config/db.js';
+import { DatabaseError } from '../errors/base-errors.js';
 
-dotenv.config();
-
-async function init() {
+async function initDB() {
   WoowahanORM(
     {
-      host: process.env.DB_HOST,
-      user: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME,
+      host: dbConfig.host,
+      user: dbConfig.user,
+      password: dbConfig.password,
+      database: dbConfig.name,
     },
     {
       sync: {
@@ -24,9 +23,14 @@ async function init() {
 }
 
 async function initModel() {
-  await User.init();
-  await CashBook.init();
-  await Payment.init();
+  try {
+    await User.init();
+    await CashBook.init();
+    await Payment.init();
+  } catch (error) {
+    console.error();
+    throw new DatabaseError('Database 초기화 에러');
+  }
 }
 
-export default init;
+export default initDB;
