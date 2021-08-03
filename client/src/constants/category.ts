@@ -21,5 +21,5 @@ export const CATEGORY_COLOR = {
   미분류: '#817DCE',
   월급: '#B9D58C',
   용돈: '#cc5527',
-  기타수입: '#F5F5F5',
+  기타수입: '#E2B765',
 };
