@@ -91,8 +91,8 @@ export default class Calendar extends Component<CalendarState> {
   }
 
   pushHistory(date: number): string {
-    if (!this.state.data[date]) return '';
-    const { income, expenditure, total } = this.state.data[date];
+    if (!this.state.calendarData[date]) return '';
+    const { income, expenditure, total } = this.state.calendarData[date];
     return `
     <p class="calendar-income">+${formatPrice(income)}</p>
     <p class="calendar-expenditure">-${formatPrice(expenditure)}</p>

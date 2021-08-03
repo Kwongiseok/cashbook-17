@@ -18,7 +18,7 @@ export type CalendarState = HistoryState & {
   total: number;
   expenditureTotal: number;
   incomeTotal: number;
-  data: CalendarDataType;
+  calendarData: CalendarDataType;
 };
 
 export type HeaderState = HistoryState & {

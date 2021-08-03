@@ -13,6 +13,7 @@ export default class CalendarView extends Component<CalendarState> {
     Model.subscribe('updateHistory', (data: any) => {
       if (data.path !== '/calendar') return;
       const newState = this.processData(data);
+      console.log(newState);
       this.setState(newState);
     });
   }
@@ -59,25 +60,25 @@ export default class CalendarView extends Component<CalendarState> {
   }
 
   processData(updateData: any): CalendarState {
-    const data: CalendarDataType = {};
+    const calendarData: CalendarDataType = {};
     let [total, incomeTotal, expenditureTotal] = [0, 0, 0];
     updateData.data.forEach((item: CashbookType) => {
       const price = item.price as number;
       const key = new Date(item.date as string).getDate();
-      if (!data[key]) {
-        data[key] = this.initialCalendarData();
+      if (!calendarData[key]) {
+        calendarData[key] = this.initialCalendarData();
       }
       if (item.category_type === INCOME) {
-        data[key].income += price;
+        calendarData[key].income += price;
         incomeTotal += price;
       } else {
-        data[key].expenditure += price;
+        calendarData[key].expenditure += price;
         expenditureTotal += price;
       }
-      data[key].total += price;
+      calendarData[key].total += price;
       total += price;
     });
-    return { ...updateData, data, total, expenditureTotal, incomeTotal };
+    return { ...updateData, calendarData, total, expenditureTotal, incomeTotal };
   }
 
   initialCalendarData(): CalendarDayType {
