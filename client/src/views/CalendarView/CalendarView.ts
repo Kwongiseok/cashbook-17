@@ -20,7 +20,10 @@ export default class CalendarView extends Component<CalendarState> {
 
   mounted(): void {
     const $calendarBody = document.querySelector('.calendar-body');
+    const $footer = document.querySelector('.calendar-footer');
     new Calendar($calendarBody as HTMLElement, this.state);
+    // $calendarBody?.classList.add('fade-enter-active');
+    // $footer?.classList.add('fade-enter-active');
   }
 
   template(): string {

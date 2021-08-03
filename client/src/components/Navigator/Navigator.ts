@@ -13,7 +13,6 @@ export default class Navigator extends Component {
       const { month, year } = data;
       this.setState({ month, year });
     });
-    this.render();
   }
   setState(nextState: HistoryState): void {
     this.$state = { ...this.$state, ...nextState };
