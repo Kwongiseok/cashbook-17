@@ -37,7 +37,7 @@ export default class ChartView extends Component<HistoryState> {
         new LineChart($lineContainer, {
           year,
           month,
-          category: category,
+          category,
         });
         this.registerCashbookToList($expenditureList, expenditureCategory, category);
         this.scrollToBottom($lineContainer);
