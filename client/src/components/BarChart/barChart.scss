@@ -49,10 +49,10 @@
 }
 
 .bar-percent-text-container {
+  position: relative;
   display: flex;
   width: 10%;
   align-items: center;
-  line-height: 1.5rem;
   margin-right: 1.2rem;
 }
 
@@ -85,7 +85,11 @@
   opacity: 0.9;
   animation: rotate1;
 }
-
+.bar-percent-ex {
+  box-sizing: border-box;
+  position: absolute;
+  left: 1.1rem;
+}
 @keyframes rotate1 {
   100% {
     transform: translateY(10em);
