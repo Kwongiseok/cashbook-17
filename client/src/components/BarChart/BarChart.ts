@@ -4,6 +4,7 @@ import { ExpenditureData, ExpenditureDataList, HistoryState } from '../../types'
 import Component from '../../utils/Component';
 import './barChart.scss';
 import formatPrice from '../../utils/formatPrice';
+import { triggerByElement } from '../../utils/customEvent';
 
 const dummy = [
   { category: '생활', percent: 64, total: 536460 },
@@ -26,8 +27,9 @@ export default class BarChart extends Component<HistoryState> {
       const target = e.target as HTMLElement;
       const el = target.closest('.bar-expenditure-container') as HTMLElement;
       if (el && el.dataset.category) {
-        // TODO: 추후에 date 받아서 입력할 년월일 계산하여 6개월 데이터 받아와야 함.
-        console.log(this.state.year, this.state.month, el.dataset.category);
+        triggerByElement(this.$target, 'categoryBar-click', {
+          category: el.dataset.category,
+        });
       }
     });
   }
