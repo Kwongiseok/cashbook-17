@@ -1,13 +1,30 @@
-import { BadRequestError } from '../errors/client-errors.js';
+import { ForbiddenError } from '../errors/client-errors.js';
 import { cashBookRepository } from '../repository/cashbook-repository.js';
+import { validateCashBookToCreate, validateCashbookToUpdate } from '../utils/cashbook-validate.js';
+import validateMonth from '../utils/month-validate.js';
 
 class CashBookService {
-  async getMainChartData(id, year, month) {
-    if (month < 1 || month > 12) {
-      throw new BadRequestError('날짜가 올바르지 않은 접근입니다.');
-    }
+  async createCashbook(user_id, body) {
+    validateCashBookToCreate(body);
+    return await cashBookRepository.createCashbook(user_id, body);
+  }
+
+  async getCashbooksData(user_id, year, month) {
+    validateMonth(month);
+    const datas = await cashBookRepository.findAllByMonth(user_id, year, month);
+    return datas;
+  }
+
+  async getCashbooksDataFromCategory(user_id, year, month, category) {
+    validateMonth(month);
+    const datas = await cashBookRepository.findAllByCategory(user_id, year, month, category);
+    return datas;
+  }
+
+  async getMainChartData(user_id, year, month) {
+    validateMonth(month);
     const returnDatas = [];
-    const datas = await cashBookRepository.findAllExpenditureByMonth(id, year, month);
+    const datas = await cashBookRepository.findAllExpenditureByMonth(user_id, year, month);
     const category = {};
     let totalPrice = 0;
     datas.forEach((item) => {
@@ -26,6 +43,18 @@ class CashBookService {
     });
     returnDatas.sort((a, b) => b.percent - a.percent);
     return returnDatas;
+  }
+
+  async updateCashbook(user_id, cashbook_id, body) {
+    await this.isMine(user_id, cashbook_id);
+    const origin = await cashBookRepository.findOneById(cashbook_id);
+    validateCashbookToUpdate(origin, body);
+    await cashBookRepository.updateCashbook(cashbook_id, body);
+  }
+
+  async isMine(user_id, cashbook_id) {
+    const cashbook_user_id = await cashBookRepository.findOwnerById(cashbook_id);
+    if (user_id !== cashbook_user_id) throw new ForbiddenError('권한이 없습니다.');
   }
 
   convertToPercent(totalPrice, targetPrice) {

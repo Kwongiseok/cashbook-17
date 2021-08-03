@@ -11,7 +11,7 @@ class PaymentService {
   async createPayment(user_id, name) {
     validatePayment(name);
     await this.isDuplicate(user_id, name);
-    await paymentRepository.createPayment(user_id, name);
+    return await paymentRepository.createPayment(user_id, name);
   }
 
   async deletePayment(user_id, payment_id) {

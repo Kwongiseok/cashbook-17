@@ -51,10 +51,11 @@ class PaymentRepository {
 
   async createPayment(user_id, name) {
     try {
-      await Payment.create({
+      const payment = await Payment.create({
         user_id,
         name,
       });
+      return payment;
     } catch (error) {
       console.error(error);
       throw new DatabaseError(PAYMENT_DB_ERROR);
