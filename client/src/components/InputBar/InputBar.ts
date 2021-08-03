@@ -34,7 +34,10 @@ export default class InputBar extends Component<InputType> {
     this.setPaymentList();
 
     const $datePickerBox = this.$target.querySelector('.input-bar__date-picker') as HTMLElement;
-    new DatePicker($datePickerBox, history.state);
+    new DatePicker($datePickerBox, {
+      year: Number(this.state.date?.split('-')[0]),
+      month: Number(this.state.date?.split('-')[1]),
+    });
     listenByElement($datePickerBox, 'date-change', (e) => {
       this.setState({
         date: e.detail.date,
