@@ -1,4 +1,4 @@
-import { BadRequestError, ForbiddenError } from '../errors/client-errors.js';
+import { ForbiddenError } from '../errors/client-errors.js';
 import { cashBookRepository } from '../repository/cashbook-repository.js';
 import { validateCashBookToCreate, validateCashbookToUpdate } from '../utils/cashbook-validate.js';
 import validateMonth from '../utils/month-validate.js';

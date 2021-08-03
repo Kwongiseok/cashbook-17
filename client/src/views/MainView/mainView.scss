@@ -92,104 +92,105 @@
       }
     }
   }
+}
 
-  > .cashbook-list {
-    width: 100%;
-    margin-top: 40px;
+.cashbook-list,
+.expenditure-list {
+  width: 100%;
+  margin-top: 40px;
 
-    > li {
+  > li {
+    display: flex;
+    flex-direction: column;
+
+    > .header {
       display: flex;
-      flex-direction: column;
+      justify-content: space-between;
+      padding: 20px 0;
+      border-bottom: 1px solid #ccd3d3;
+      animation-name: show-animation;
+      transition: 0.2s;
 
-      > .header {
-        display: flex;
-        justify-content: space-between;
-        padding: 20px 0;
-        border-bottom: 1px solid #ccd3d3;
-        animation-name: show-animation;
-        transition: 0.2s;
+      > .date {
+        font-size: 14px;
 
-        > .date {
-          font-size: 14px;
-
-          > label {
-            &:first-child {
-              font-weight: 500;
-            }
-            &:last-child {
-              color: #626666;
-              margin-left: 8px;
-            }
+        > label {
+          &:first-child {
+            font-weight: 500;
           }
-        }
-        > .total {
-          font-size: 14px;
-          color: #626666;
-
-          > label:last-child {
+          &:last-child {
+            color: #626666;
             margin-left: 8px;
           }
         }
       }
-      > .cashbook-items {
+      > .total {
+        font-size: 14px;
+        color: #626666;
+
+        > label:last-child {
+          margin-left: 8px;
+        }
+      }
+    }
+    > .cashbook-items {
+      display: flex;
+      flex-direction: column;
+
+      > li {
         display: flex;
-        flex-direction: column;
+        padding: 20px 12px;
+        border-bottom: 1px solid #ccd3d3;
+        animation-name: show-animation;
+        transition: 0.2s;
+        cursor: pointer;
 
-        > li {
+        &:hover {
+          background-color: #e6e9e9;
+        }
+
+        > div {
           display: flex;
-          padding: 20px 12px;
-          border-bottom: 1px solid #ccd3d3;
-          animation-name: show-animation;
-          transition: 0.2s;
-          cursor: pointer;
+          line-height: 33px;
+          margin-right: 10px;
+          height: 30px;
+        }
 
-          &:hover {
-            background-color: #e6e9e9;
-          }
+        > .category {
+          justify-content: center;
+          width: 92px;
+          background-color: #d092e2;
+          border-radius: 999px;
+          color: white;
+        }
+        > .memo {
+          width: 300px;
+        }
+        > .payment {
+          width: 200px;
+        }
+        > .price {
+          justify-content: flex-end;
+          width: 200px;
 
-          > div {
-            display: flex;
-            line-height: 33px;
-            margin-right: 10px;
-            height: 30px;
+          &.income {
+            color: #2e58a7;
           }
-
-          > .category {
-            justify-content: center;
-            width: 92px;
-            background-color: #d092e2;
-            border-radius: 999px;
-            color: white;
-          }
-          > .memo {
-            width: 300px;
-          }
-          > .payment {
-            width: 200px;
-          }
-          > .price {
-            justify-content: flex-end;
-            width: 200px;
-
-            &.income {
-              color: #2e58a7;
-            }
-            &.expenditure {
-              color: #f45452;
-            }
+          &.expenditure {
+            color: #f45452;
           }
         }
       }
+    }
 
-      @keyframes show-animation {
-        0% {
-          opacity: 0;
-          transform: translateY(30px);
-        }
-        100% {
-          opacity: 1;
-          transform: translateY(0);
-        }
+    @keyframes show-animation {
+      0% {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
       }
     }
   }
