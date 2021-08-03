@@ -1,17 +1,34 @@
 import Component from '../../utils/Component';
 import './calendar.scss';
-import { CalendarDataType, CalendarDate, CalendarState } from '../../types';
+import { CalendarDate, CalendarState } from '../../types';
 import formatPrice from '../../utils/formatPrice';
 
 export default class Calendar extends Component<CalendarState> {
   constructor($target: HTMLElement, state: CalendarState) {
     super($target, state);
   }
+
+  setEvent() {
+    const $container = document.querySelector('.calendar-body-container') as HTMLElement;
+    $container.addEventListener('click', (e: Event) => {
+      const target = e.target as HTMLElement;
+      const el = target.closest('.now-month') as HTMLElement;
+      if (el && el.dataset.date) {
+        if (this.state.calendarData[el.dataset.date]) {
+          const modalDatas = this.state.calendarData[el.dataset.date].datas;
+          this.state.openModal(modalDatas);
+        }
+      }
+    });
+  }
+
   template(): string {
     if (this.state) {
       const { year, month } = this.state as CalendarState;
       return `
-      ${this.convertCalendarDaysToHTML(year as number, (month as number) - 1)}
+      <div class="calendar-body-container">
+        ${this.convertCalendarDaysToHTML(year as number, (month as number) - 1)}
+      </div>
     `;
     }
     return '';
@@ -60,8 +77,8 @@ export default class Calendar extends Component<CalendarState> {
             ${isToday && today.getDate() === d + 1 ? 'calendar-today' : ''}
             ${(thisMonthFirstDate.getDay() + d) % 7 === 0 ? 'calendar-sun' : ''}
             ${(thisMonthFirstDate.getDay() + d) % 7 === 6 ? 'calendar-sat' : ''}
-            calendar-day now-month
-          "
+            calendar-day now-month"
+            data-date=${d + 1}
         >
         ${this.pushHistory(d + 1)}
         <span>${d + 1}</span>
@@ -99,8 +116,4 @@ export default class Calendar extends Component<CalendarState> {
     <p class="calendar-total">${total >= 0 ? formatPrice(total) : '-' + formatPrice(total)}</p>
     `;
   }
-
-  mounted() {}
-
-  setEvent() {}
 }

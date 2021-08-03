@@ -1,10 +1,11 @@
+import { CATEGORY } from './../../types';
 import Model from '../../models/model';
 import Component from '../../utils/Component';
 import { DAY_OF_THE_WEEK } from '../../constants/days';
 import Calendar from '../../components/Calendar/Calendar';
 import './calendarView.scss';
 import formatPrice from '../../utils/formatPrice';
-import { INCOME } from '../../constants/category';
+import { CATEGORY_COLOR, INCOME } from '../../constants/category';
 import { CalendarDataType, CalendarDayType, CalendarState, CashbookType } from '../../types';
 
 export default class CalendarView extends Component<CalendarState> {
@@ -13,18 +14,20 @@ export default class CalendarView extends Component<CalendarState> {
     Model.subscribe('updateHistory', (data: any) => {
       if (data.path !== '/calendar') return;
       const newState = this.processData(data);
-      console.log(newState);
       this.setState(newState);
     });
   }
-  setup() {}
+
+  setEvent() {
+    const $modal = document.querySelector('.calendar-day-modal') as HTMLElement;
+    $modal.addEventListener('click', () => {
+      $modal.classList.remove('opened');
+    });
+  }
 
   mounted(): void {
     const $calendarBody = document.querySelector('.calendar-body');
-    const $footer = document.querySelector('.calendar-footer');
-    new Calendar($calendarBody as HTMLElement, this.state);
-    // $calendarBody?.classList.add('fade-enter-active');
-    // $footer?.classList.add('fade-enter-active');
+    new Calendar($calendarBody as HTMLElement, { ...this.state, openModal: this.openCalendarDataModal.bind(this) });
   }
 
   template(): string {
@@ -43,10 +46,10 @@ export default class CalendarView extends Component<CalendarState> {
         <span>총계: ${this.formatTotal(total)}</span>
       </div>
     </div>
-    </div>`;
+    </div>
+    <div class="calendar-day-modal"></div>
+    `;
   }
-
-  setEvent() {}
 
   convertDayOfTheWeekToHTML(): string {
     return DAY_OF_THE_WEEK.map((day) => `<li class="calendar-header-day">${day}</li>`).join('');
@@ -77,6 +80,7 @@ export default class CalendarView extends Component<CalendarState> {
       }
       calendarData[key].total += price;
       total += price;
+      calendarData[key].datas.push(item);
     });
     return { ...updateData, calendarData, total, expenditureTotal, incomeTotal };
   }
@@ -86,6 +90,50 @@ export default class CalendarView extends Component<CalendarState> {
       income: 0,
       expenditure: 0,
       total: 0,
+      datas: [],
     };
+  }
+
+  openCalendarDataModal(data: CashbookType[]): void {
+    const $modal = document.querySelector('.calendar-day-modal') as HTMLElement;
+    $modal.innerHTML = this.pushModalData(data);
+    $modal.classList.add('opened');
+  }
+
+  pushModalData(data: CashbookType[]): string {
+    const income: CashbookType[] = [];
+    const expenditure: CashbookType[] = [];
+    data.forEach((item) => (item.category_type === INCOME ? income.push(item) : expenditure.push(item)));
+    return `
+      <div class="calendar-modal-container">
+        <div class="calendar-modal-incomes">
+          <p class="calendar-modal-title">INCOME</p>
+          ${this.convertFromData(income)}
+        </div>
+        <div class="calendar-modal-expenditures">
+          <p class="calendar-modal-title">EXPENDITURE</p>
+          ${this.convertFromData(expenditure)}
+        </div>
+      </div>`;
+  }
+
+  convertFromData(data: CashbookType[]): string {
+    return data
+      .map(
+        (item) => `
+      <div class="calendar-modal-data">
+        <div class="calendar-modal-top">
+          <div class="calendar-modal-category" style="color:${CATEGORY_COLOR[item.category as CATEGORY]}">${
+          item.category
+        }</div>
+          <span class="calendar-modal-payment">${item.payment}</span>
+        </div>
+        <div class="calendar-modal-bottom">
+          <div class="calendar-modal-memo">${item.memo}</div>
+          <span class="calendar-modal-price">${item.price}</span>
+        </div>
+    </div>`
+      )
+      .join('');
   }
 }

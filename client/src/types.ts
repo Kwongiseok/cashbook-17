@@ -1,3 +1,4 @@
+import { CashbookType } from './types';
 export interface CalendarDate {
   prevMonthLastDate: Date;
   thisMonthFirstDate: Date;
@@ -19,6 +20,7 @@ export type CalendarState = HistoryState & {
   expenditureTotal: number;
   incomeTotal: number;
   calendarData: CalendarDataType;
+  openModal: (data: CashbookType[]) => void;
 };
 
 export type HeaderState = HistoryState & {
@@ -66,6 +68,7 @@ export type CalendarDayType = {
   income: number;
   expenditure: number;
   total: number;
+  datas: Array<CashbookType>;
 };
 
 export type CalendarDataType = {
