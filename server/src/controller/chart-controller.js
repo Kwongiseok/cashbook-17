@@ -13,10 +13,15 @@ class ChartController {
     return this.router;
   }
 
-  async getMainChart(req, res, next) {
-    const { year, month } = req.query;
+  async getMainChart(req, res, _next) {
+    const { year, month, category } = req.query;
     const user_id = req.user_id;
-    const datas = await cashBookService.getMainChartData(user_id, year, month);
+    let datas;
+    if (category) {
+      datas = await cashBookService.getExpenditureByCategory(user_id, year, month, category);
+    } else {
+      datas = await cashBookService.getMainChartData(user_id, year, month);
+    }
     res.status(200).json(datas);
   }
 }
