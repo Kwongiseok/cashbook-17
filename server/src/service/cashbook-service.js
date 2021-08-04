@@ -47,9 +47,15 @@ class CashBookService {
 
   async getExpenditureByCategory(user_id, year, month, category) {
     validateMonth(month);
-    const date = new Date(year, month - 1).getDate();
-    const datas = await cashBookRepository.findAllExpenditureByCategoryIn6Month(user_id, date, category);
-    return datas;
+    let result = [];
+    for (let i = 6; i >= 0; i--) {
+      const date = new Date(year, month - i);
+      const expenditureCashbooks = await cashBookRepository.findAllExpenditureByMonth(user_id, year, month - i);
+      const totalPrice = expenditureCashbooks.reduce((prev, curr) => prev + curr.price, 0);
+
+      result.push(totalPrice);
+    }
+    return result;
   }
 
   async updateCashbook(user_id, cashbook_id, body) {
