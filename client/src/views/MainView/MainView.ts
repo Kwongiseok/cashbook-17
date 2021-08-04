@@ -81,7 +81,13 @@ export default class MainView extends Component<MainViewState> {
   mounted() {
     const $inputBar = document.querySelector('.input-bar') as HTMLElement;
     const $cashbookList = document.querySelector('.cashbook-list') as HTMLUListElement;
-    new InputBar($inputBar, { addCashBook: this.addCashbook.bind(this), payments: this.state.payments });
+    const { payments, year, month } = this.state;
+    new InputBar($inputBar, {
+      addCashBook: this.addCashbook.bind(this),
+      payments,
+      year,
+      month,
+    });
     this.setCashbookList($cashbookList);
   }
 

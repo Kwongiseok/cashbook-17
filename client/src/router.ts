@@ -11,7 +11,13 @@ export default class Router {
     this.$wrapper = $wrapper;
     new HeaderView($header, { isLoggedIn: false });
     new MainView($wrapper, {});
-    new CalendarView($wrapper, { total: 0, incomeTotal: 0, expenditureTotal: 0, data: {} });
+    new CalendarView($wrapper, {
+      total: 0,
+      incomeTotal: 0,
+      expenditureTotal: 0,
+      calendarData: {},
+      openModal: () => {},
+    });
     new ChartView($wrapper, { data: [], total: 0 });
 
     listen('statechange', this.stateChangeHandler.bind(this) as unknown as EventListener);
