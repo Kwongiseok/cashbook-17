@@ -45,6 +45,13 @@ class CashBookService {
     return returnDatas;
   }
 
+  async getExpenditureByCategory(user_id, year, month, category) {
+    validateMonth(month);
+    const date = new Date(year, month - 1).getDate();
+    const datas = await cashBookRepository.findAllExpenditureByCategoryIn6Month(user_id, date, category);
+    return datas;
+  }
+
   async updateCashbook(user_id, cashbook_id, body) {
     await this.isMine(user_id, cashbook_id);
     const origin = await cashBookRepository.findOneById(cashbook_id);
