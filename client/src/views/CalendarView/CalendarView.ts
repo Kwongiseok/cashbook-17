@@ -21,7 +21,14 @@ export default class CalendarView extends Component<CalendarState> {
   setEvent() {
     const $modal = document.querySelector('.calendar-day-modal') as HTMLElement;
     $modal.addEventListener('click', () => {
-      $modal.classList.remove('opened');
+      const $container = document.querySelector('.calendar-modal-container') as HTMLElement;
+      $container.classList.add('modal-close-animation');
+      $modal.classList.add('closeModal');
+      setTimeout(() => {
+        $modal.classList.remove('opened');
+        $container.classList.remove('modal-close-animation');
+        $modal.classList.remove('closeModal');
+      }, 300);
     });
   }
 
@@ -130,7 +137,7 @@ export default class CalendarView extends Component<CalendarState> {
         </div>
         <div class="calendar-modal-bottom">
           <div class="calendar-modal-memo">${item.memo}</div>
-          <span class="calendar-modal-price">${item.price}</span>
+          <span class="calendar-modal-price">${formatPrice(item.price as number)}</span>
         </div>
     </div>`
       )

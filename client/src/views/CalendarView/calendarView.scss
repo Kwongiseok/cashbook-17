@@ -85,6 +85,7 @@
   right: 0;
   bottom: 0;
   display: none;
+  animation: openOpacityAnimation 400ms;
 }
 .calendar-day-modal.opened {
   display: block;
@@ -96,18 +97,22 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 40%;
-  height: 60%;
+  width: 35%;
+  height: 65%;
   margin: auto;
   background-color: white;
   border-radius: 12px;
   padding: 2rem;
   overflow: auto;
+  animation: openAnimation 400ms;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
 .calendar-modal-container::-webkit-scrollbar {
   display: none;
+}
+.calendar-modal-container.modal-close-animation {
+  animation: closeAnimation 400ms;
 }
 .calendar-modal-incomes,
 .calendar-modal-expenditures {
@@ -174,7 +179,9 @@
   }
 }
 
-// test
+.closeModal {
+  animation: closeOpacityAnimation 400ms;
+}
 @keyframes rotateCalendar {
   0% {
     opacity: 0;
@@ -183,5 +190,48 @@
   100% {
     opacity: 1;
     transform: translateX(0%) rotateZ(0);
+  }
+}
+
+@keyframes openAnimation {
+  0% {
+    opacity: 0;
+    width: 25%;
+    height: 40%;
+  }
+  100% {
+    opacity: 1;
+    width: 35%;
+    height: 65%;
+  }
+}
+@keyframes closeAnimation {
+  0% {
+    opacity: 1;
+    width: 35%;
+    height: 65%;
+  }
+  100% {
+    opacity: 0;
+    width: 25%;
+    height: 40%;
+  }
+}
+
+@keyframes openOpacityAnimation {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes closeOpacityAnimation {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
   }
 }
