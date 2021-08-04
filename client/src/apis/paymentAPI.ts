@@ -33,3 +33,18 @@ export const createPayment = async (name: string) => {
     console.log(error);
   }
 };
+
+export const deletePayment = async (id: number) => {
+  try {
+    const res = await fetch(`${API_BASE_URL}/payments/${id}`, {
+      method: 'DELETE',
+    });
+    if (!res.ok) {
+      const { message } = await res.json();
+      throw new Error(`${message}`);
+    }
+    return true;
+  } catch (error) {
+    console.log(error);
+  }
+};

@@ -74,7 +74,7 @@ export default class ChartView extends Component<MainChartState> {
       {
         id: 1,
         category: '문화/여가',
-        categoryType: 'expenditure',
+        category_type: 'expenditure',
         memo: '스트리밍서비스 정기 결제',
         payment: '현대카드',
         price: -10900,
@@ -83,7 +83,7 @@ export default class ChartView extends Component<MainChartState> {
       {
         id: 2,
         category: '교통',
-        categoryType: 'expenditure',
+        category_type: 'expenditure',
         memo: '후불 교통비 결제',
         payment: '현대카드',
         price: -45340,
@@ -92,7 +92,7 @@ export default class ChartView extends Component<MainChartState> {
       {
         id: 3,
         category: '용돈',
-        categoryType: 'expenditure',
+        category_type: 'expenditure',
         memo: '7월 용돈',
         payment: '현금',
         price: -60000,
@@ -135,7 +135,7 @@ export default class ChartView extends Component<MainChartState> {
         }</div>
           <div class="memo">${cashbook.memo}</div>
           <div class="payment">${cashbook.payment}</div>
-          <div class="price ${cashbook.categoryType}">${cashbook.price.toLocaleString()}</div>
+          <div class="price ${cashbook.category_type}">${cashbook.price.toLocaleString()}</div>
         `;
         $cashBookitems.appendChild($cashbookItem);
       });

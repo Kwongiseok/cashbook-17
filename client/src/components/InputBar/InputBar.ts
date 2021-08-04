@@ -7,14 +7,14 @@ import confirm from '../../utils/confirm/Confirm';
 import { listenByElement } from '../../utils/customEvent';
 import Alert from '../../utils/alert/Alert';
 import DatePicker from '../../components/DatePicker/DatePicker';
-import { createPayment } from '../../apis/paymentAPI';
+import { createPayment, deletePayment } from '../../apis/paymentAPI';
 
 let dummyPayment = ['신한카드', '계좌이체', '현금'];
 
 type InputType = {
   date?: string;
   category?: CATEGORY;
-  categoryType?: CATEGORY_TYPE;
+  category_type?: CATEGORY_TYPE;
   memo?: string;
   payment?: string;
   price?: number;
@@ -29,8 +29,6 @@ export default class InputBar extends Component<InputType> {
       this.setState(e.detail);
     });
   }
-
-  setup() {}
 
   mounted() {
     this.setPaymentList();
@@ -93,10 +91,10 @@ export default class InputBar extends Component<InputType> {
       <div class="input-bar__price">
         <label>금액</label>
         <div>
-          <span class="payment-type ${this.state.categoryType}">${
-      this.state.categoryType === 'income' ? '+' : '-'
+          <span class="payment-type ${this.state.category_type}">${
+      this.state.category_type === 'income' ? '+' : '-'
     }</span>
-          <input type="text" value="${this.getCurrentPrice()}" class="${this.state.categoryType}">
+          <input type="text" value="${this.getCurrentPrice()}" class="${this.state.category_type}">
           <label>원</label>
           <div class="submit"><div></div></div>
         </div>
@@ -193,15 +191,15 @@ export default class InputBar extends Component<InputType> {
   categoryClickHandler(e: any) {
     const clickedElement = e.target;
     if (!(clickedElement instanceof HTMLLIElement)) return;
-    let categoryType, category;
+    let category_type, category;
     if (clickedElement.parentElement?.classList.contains('category-income')) {
-      categoryType = 'income';
+      category_type = 'income';
     } else {
-      categoryType = 'expenditure';
+      category_type = 'expenditure';
     }
     category = clickedElement.innerText;
     this.setState({
-      categoryType: categoryType,
+      category_type: category_type,
       category: category,
     });
   }
@@ -235,17 +233,17 @@ export default class InputBar extends Component<InputType> {
     });
   }
   async addCashbook() {
-    const { date, category, categoryType, memo, payment, price } = this.state as InputType;
+    const { date, category, category_type, memo, payment, price } = this.state as InputType;
     if (date === '' || !category || memo === '' || payment === '' || !price) {
       await Alert('내용을 모두 입력후 진행 해주세요.');
       return;
     }
     let finalPrice = price;
-    if (categoryType === 'expenditure') finalPrice = -Number(price);
+    if (category_type === 'expenditure') finalPrice = -Number(price);
     this.state.addCashBook({
       date: date,
       category: category,
-      categoryType: categoryType,
+      category_type: category_type,
       memo: memo,
       payment: payment,
       price: finalPrice,
@@ -255,7 +253,7 @@ export default class InputBar extends Component<InputType> {
   setPaymentList() {
     const $paymentDropdown = this.$target.querySelector('.input-bar__payment .input-dropdown');
     this.state.payments.forEach((item) => {
-      const { name } = item;
+      const { name, id } = item;
       const $item = document.createElement('li');
       const $deleteButton = document.createElement('img');
       $item.innerText = name;
@@ -266,40 +264,47 @@ export default class InputBar extends Component<InputType> {
         });
       });
       $deleteButton.setAttribute('src', DeleteIcon);
-      $deleteButton.addEventListener('click', (e: MouseEvent) => this.deletePayment(e, name));
+      $deleteButton.addEventListener('click', (e: MouseEvent) => this.deletePayment(e, name, id));
       $item.appendChild($deleteButton);
       $paymentDropdown?.appendChild($item);
     });
     const $addButton = document.createElement('li');
     $addButton.innerText = '추가하기';
-    $addButton.addEventListener('click', this.addPayment);
+    $addButton.addEventListener('click', this.addPayment.bind(this));
     $paymentDropdown?.appendChild($addButton);
   }
 
   async addPayment() {
     const result = await confirm('추가하실 결제수단을 적어주세요.');
     if (result) {
-      dummyPayment.push(result); // 서버로 추가 요청 보내기
       const newPayment = await createPayment(result);
       if (newPayment) {
         this.setState({
           payment: result,
+          payments: [...this.state.payments, newPayment],
         });
       }
     }
   }
 
-  async deletePayment(e: MouseEvent, payment: string) {
+  async deletePayment(e: MouseEvent, payment: string, id: number) {
     e.stopPropagation();
     const result = await Alert(`결제수단 <span>${payment}</span>를 삭제 하시겠습니다?`);
     if (result) {
       const $paymentDropdown = this.$target.querySelector('.input-bar__payment .input-dropdown') as HTMLElement;
       const $item = $paymentDropdown.querySelector(`[data-value="${payment}"]`) as HTMLElement;
       $item.parentElement?.removeChild($item);
-      dummyPayment = dummyPayment.filter((dummyPayment) => dummyPayment !== payment); // 서버로 삭제 요청 보내기
+      const res = await deletePayment(id);
+      if (!res) return;
+      const newPaymetns = this.state.payments.filter((item) => item.name !== payment); // 서버로 삭제 요청 보내기
       if (this.state.payment === payment) {
         this.setState({
           payment: '',
+          payments: newPaymetns,
+        });
+      } else {
+        this.setState({
+          payments: newPaymetns,
         });
       }
     }
