@@ -18,3 +18,22 @@
     margin-bottom: 12px;
   }
 }
+@media screen and (max-width: 420px) {
+  .header-navigator-date {
+    width: 2rem;
+    > h2 {
+      font-size: 1rem;
+    }
+  }
+  .header-navigator-left {
+    font-size: 1.1rem;
+    margin-right: 0.5rem;
+  }
+  .header-navigator-right {
+    font-size: 1.1rem;
+    margin-left: 0.5rem;
+  }
+  .header-icon {
+    width: 1rem;
+  }
+}
