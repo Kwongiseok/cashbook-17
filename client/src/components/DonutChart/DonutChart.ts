@@ -1,30 +1,22 @@
 import { EXPENDITURE_CATEGORY } from '../../constants/category';
-import { ExpenditureDataList, HistoryState } from '../../types';
+import { ExpenditureDataList, HistoryState, MainChartState } from '../../types';
 import Component from '../../utils/Component';
 import './donutChart.scss';
 
-const dummy = [
-  { category: '생활', percent: 64, total: 536460 },
-  { category: '의료/건강', percent: 15, total: 125300 },
-  { category: '쇼핑/뷰티', percent: 7, total: 56000 },
-  { category: '교통', percent: 6, total: 45340 },
-  { category: '식비', percent: 5, total: 40540 },
-  { category: '문화/여가', percent: 2, total: 20800 },
-  { category: '미분류', percent: 1, total: 10200 },
-];
-
-export default class DonutChart extends Component<HistoryState> {
-  constructor($target: HTMLElement, state: HistoryState) {
+export default class DonutChart extends Component<MainChartState> {
+  constructor($target: HTMLElement, state: MainChartState) {
     super($target, state);
   }
   mounted(): void {
-    const $container = document.querySelector('.donut-container');
-    const $svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    $svg.setAttribute('width', '100%');
-    $svg.setAttribute('height', '100%');
-    $svg.setAttribute('viewBox', '0 0 100 100');
-    this.appendCircle($svg, dummy);
-    $container?.appendChild($svg);
+    if (this.state.data) {
+      const $container = document.querySelector('.donut-container');
+      const $svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      $svg.setAttribute('width', '100%');
+      $svg.setAttribute('height', '100%');
+      $svg.setAttribute('viewBox', '0 0 100 100');
+      this.appendCircle($svg, this.state.data);
+      $container?.appendChild($svg);
+    }
   }
   template(): string {
     return '<div class="donut-container"></div>';

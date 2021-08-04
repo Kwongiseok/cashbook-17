@@ -1,3 +1,4 @@
+import { MainChartState } from '../../types';
 import { HistoryState, CashbookType } from 'types';
 import { DAY_OF_THE_WEEK } from '../../constants/days';
 import { CATEGORY_COLOR } from '../../constants/category';
@@ -9,10 +10,10 @@ import Component from '../../utils/Component';
 import { listenByElement } from '../../utils/customEvent';
 import './chartView.scss';
 
-export default class ChartView extends Component<HistoryState> {
-  constructor($target: HTMLElement, state: HistoryState) {
+export default class ChartView extends Component<MainChartState> {
+  constructor($target: HTMLElement, state: MainChartState) {
     super($target, state);
-    Model.subscribe('statechange', (data: any) => {
+    Model.subscribe('updateHistory', (data: MainChartState) => {
       if (data.path !== '/chart') return;
       this.setState(data);
     });

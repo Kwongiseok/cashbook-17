@@ -2,8 +2,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-
+const { DefinePlugin } = require('webpack');
 const path = require('path');
+const dotenv = require('dotenv');
+
+dotenv.config({ path: './.env' });
 
 module.exports = {
   entry: './src/index.ts',
@@ -56,6 +59,10 @@ module.exports = {
       template: './src/index.html',
     }),
     new MiniCssExtractPlugin(),
+    new DefinePlugin({
+      'process.env.API_BASE_URL': JSON.stringify(process.env.API_BASE_URL),
+      'process.env.GITHUB_SIGN_URL': JSON.stringify(process.env.GITHUB_SIGN_URL),
+    }),
   ],
   optimization: {
     minimize: true,

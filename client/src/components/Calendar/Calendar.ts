@@ -1,17 +1,34 @@
 import Component from '../../utils/Component';
 import './calendar.scss';
-import { CalendarDate, HistoryState } from '../../types';
+import { CalendarDate, CalendarState } from '../../types';
 import formatPrice from '../../utils/formatPrice';
 
-export default class Calendar extends Component<HistoryState> {
-  constructor($target: HTMLElement, state: HistoryState) {
+export default class Calendar extends Component<CalendarState> {
+  constructor($target: HTMLElement, state: CalendarState) {
     super($target, state);
   }
+
+  setEvent() {
+    const $container = document.querySelector('.calendar-body-container') as HTMLElement;
+    $container.addEventListener('click', (e: Event) => {
+      const target = e.target as HTMLElement;
+      const el = target.closest('.now-month') as HTMLElement;
+      if (el && el.dataset.date) {
+        if (this.state.calendarData[el.dataset.date]) {
+          const modalDatas = this.state.calendarData[el.dataset.date].datas;
+          this.state.openModal(modalDatas);
+        }
+      }
+    });
+  }
+
   template(): string {
     if (this.state) {
-      const { year, month } = this.state as HistoryState;
+      const { year, month } = this.state as CalendarState;
       return `
-      ${this.convertCalendarDaysToHTML(year as number, (month as number) - 1)}
+      <div class="calendar-body-container">
+        ${this.convertCalendarDaysToHTML(year as number, (month as number) - 1)}
+      </div>
     `;
     }
     return '';
@@ -60,13 +77,11 @@ export default class Calendar extends Component<HistoryState> {
             ${isToday && today.getDate() === d + 1 ? 'calendar-today' : ''}
             ${(thisMonthFirstDate.getDay() + d) % 7 === 0 ? 'calendar-sun' : ''}
             ${(thisMonthFirstDate.getDay() + d) % 7 === 6 ? 'calendar-sat' : ''}
-            calendar-day now-month
-          "
+            calendar-day now-month"
+            data-date=${d + 1}
         >
-          <p class="calendar-income">${formatPrice(43112)}</p>
-          <p class="calendar-expenditure">${formatPrice(312341)}</p>
-          <p class="calendar-total">${formatPrice(271212)}</p>
-          <span>${d + 1}</span>
+        ${this.pushHistory(d + 1)}
+        <span>${d + 1}</span>
         </div>`
       );
     }
@@ -92,7 +107,13 @@ export default class Calendar extends Component<HistoryState> {
     }
   }
 
-  mounted() {}
-
-  setEvent() {}
+  pushHistory(date: number): string {
+    if (!this.state.calendarData[date]) return '';
+    const { income, expenditure, total } = this.state.calendarData[date];
+    return `
+    <p class="calendar-income">+${formatPrice(income)}</p>
+    <p class="calendar-expenditure">-${formatPrice(expenditure)}</p>
+    <p class="calendar-total">${total >= 0 ? formatPrice(total) : '-' + formatPrice(total)}</p>
+    `;
+  }
 }

@@ -17,7 +17,7 @@ const dummy: CashcooksResponse = {
     {
       id: 1,
       category: '문화/여가',
-      categoryType: 'expenditure',
+      category_type: 'expenditure',
       memo: '스트리밍서비스 정기 결제',
       payment: '현대카드',
       price: -10900,
@@ -26,7 +26,7 @@ const dummy: CashcooksResponse = {
     {
       id: 2,
       category: '교통',
-      categoryType: 'expenditure',
+      category_type: 'expenditure',
       memo: '후불 교통비 결제',
       payment: '현대카드',
       price: -45340,
@@ -35,7 +35,7 @@ const dummy: CashcooksResponse = {
     {
       id: 3,
       category: '용돈',
-      categoryType: 'income',
+      category_type: 'income',
       memo: '7월 용돈',
       payment: '현금',
       price: 60000,
@@ -148,8 +148,8 @@ export default class MainView extends Component<MainViewState> {
     const { incomeChecked, expenditureChecked } = this.state;
     return this.state.cashbooks.filter(
       (cashbook) =>
-        (cashbook.categoryType === 'income' && incomeChecked) ||
-        (cashbook.categoryType === 'expenditure' && expenditureChecked)
+        (cashbook.category_type === 'income' && incomeChecked) ||
+        (cashbook.category_type === 'expenditure' && expenditureChecked)
     ).length;
   }
 
@@ -168,17 +168,17 @@ export default class MainView extends Component<MainViewState> {
         .filter((cashbook) => cashbook.date === `${year}-${month}-${i}`)
         .filter(
           (cashbook) =>
-            (cashbook.categoryType === 'income' && incomeChecked) ||
-            (cashbook.categoryType === 'expenditure' && expenditureChecked)
+            (cashbook.category_type === 'income' && incomeChecked) ||
+            (cashbook.category_type === 'expenditure' && expenditureChecked)
         );
       if (cashbooks.length === 0) continue;
       const dayIndex = new Date(year, Number(month) - 1, i).getDay();
       const totalIncome: number = cashbooks.reduce((a, cashbook) => {
-        if (cashbook.categoryType === 'income') return Number(cashbook.price) + a;
+        if (cashbook.category_type === 'income') return Number(cashbook.price) + a;
         return a;
       }, 0);
       const totalExpenditure: number = cashbooks.reduce((a, cashbook) => {
-        if (cashbook.categoryType === 'expenditure') return Number(cashbook.price) + a;
+        if (cashbook.category_type === 'expenditure') return Number(cashbook.price) + a;
         return a;
       }, 0);
 
@@ -206,14 +206,14 @@ export default class MainView extends Component<MainViewState> {
         }</div>
           <div class="memo">${cashbook.memo}</div>
           <div class="payment">${cashbook.payment}</div>
-          <div class="price ${cashbook.categoryType}">${cashbook.price.toLocaleString()}</div>
+          <div class="price ${cashbook.category_type}">${cashbook.price.toLocaleString()}</div>
         `;
         $cashbookItem.addEventListener('click', (e) => {
           triggerByElement(document.querySelector('.input-bar') as HTMLInputElement, 'selectCashbook', {
             date: cashbook.date,
             category: cashbook.category,
-            categoryType: cashbook.categoryType,
-            price: (cashbook.price as number) * (cashbook.categoryType === 'expenditure' ? -1 : 1),
+            category_type: cashbook.category_type,
+            price: (cashbook.price as number) * (cashbook.category_type === 'expenditure' ? -1 : 1),
             memo: cashbook.memo,
             payment: cashbook.payment,
           });

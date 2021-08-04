@@ -29,11 +29,11 @@ class AuthService {
     if (session) {
       const user_id = session.user;
       if (user_id) {
-        const user = await userRepository.findById(id);
+        const user = await userRepository.findById(user_id);
         if (!user) {
           throw new BadRequestError(INVALID_ACCESS);
         }
-        user && req.session.destroy();
+        user && session.destroy();
       } else {
         throw new BadRequestError(INVALID_ACCESS);
       }

@@ -9,20 +9,24 @@ class AuthController {
   }
 
   configureRoutes() {
+    this.router.get('/', this.checkLoggedIn.bind(this));
     this.router.post('/logout', wrapAsync(this.logout.bind(this)));
-    this.router.get('/github', this.getOAuthGitHub.bind(this));
     this.router.get('/github/callback', wrapAsync(this.getOAuthGitHubCb.bind(this)));
     return this.router;
+  }
+
+  async checkLoggedIn(req, res) {
+    if (req.session.user) {
+      res.sendStatus(200);
+    } else {
+      res.sendStatus(300);
+    }
   }
 
   async logout(req, res, next) {
     const session = req.session;
     await authService.logout(session);
     res.status(200).send('logout success');
-  }
-
-  getOAuthGitHub(req, res, next) {
-    res.redirect(githubConfig.signURL);
   }
 
   async getOAuthGitHubCb(req, res, next) {

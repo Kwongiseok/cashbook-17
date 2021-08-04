@@ -1,8 +1,30 @@
+import { CashbookType } from './types';
+export interface CalendarDate {
+  prevMonthLastDate: Date;
+  thisMonthFirstDate: Date;
+  thisMonthLastDate: Date;
+  nextMonthFirstDate: Date;
+}
 export type HistoryState = {
   path?: string;
   year?: number;
   month?: number;
   type?: string;
+};
+export type MainChartState = HistoryState & {
+  total: number;
+  data: ExpenditureDataList;
+};
+export type CalendarState = HistoryState & {
+  total: number;
+  expenditureTotal: number;
+  incomeTotal: number;
+  calendarData: CalendarDataType;
+  openModal: (data: CashbookType[]) => void;
+};
+
+export type HeaderState = HistoryState & {
+  isLoggedIn: boolean;
 };
 export type ExpenditureCategoryType = {
   [key: string]: string;
@@ -10,13 +32,6 @@ export type ExpenditureCategoryType = {
 
 export type ExpenditureData = { category: string; percent: number; total: number };
 export type ExpenditureDataList = Array<ExpenditureData>;
-
-export interface CalendarDate {
-  prevMonthLastDate: Date;
-  thisMonthFirstDate: Date;
-  thisMonthLastDate: Date;
-  nextMonthFirstDate: Date;
-}
 
 export type CashcooksResponse = {
   totalElements: number;
@@ -42,9 +57,22 @@ export type CATEGORY_TYPE = 'expenditure' | 'income';
 export type CashbookType = {
   id?: number;
   category?: CATEGORY;
-  categoryType?: CATEGORY_TYPE;
+  category_type?: CATEGORY_TYPE;
   memo?: string;
   payment?: string;
   price?: number;
   date?: string;
 };
+
+export type CalendarDayType = {
+  income: number;
+  expenditure: number;
+  total: number;
+  datas: Array<CashbookType>;
+};
+
+export type CalendarDataType = {
+  [key: string]: CalendarDayType;
+};
+
+export type FetchDataType = Array<CashbookType>;

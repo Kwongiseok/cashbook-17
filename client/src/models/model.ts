@@ -1,3 +1,6 @@
+import { HistoryState } from '../types';
+import { getMainChartData, getMonthData } from '../apis/cashbookAPI';
+
 type Subscription = {
   [key: string]: Array<Function>;
 };
@@ -16,7 +19,7 @@ const Model = {
    * - event.publish('event event1 event2', { data: 'customData' });
    */
 
-  publish(event: string, data?: object): void {
+  publish(event: string, data?: object | Array<Object>): void {
     const events = this.subscriptions[event];
     events.forEach((cb) => cb(data));
   },
@@ -39,4 +42,18 @@ const Model = {
     }
   },
 };
+
+Model.subscribe('statechange', fetchCashbookData);
+
+async function fetchCashbookData(historyState: HistoryState) {
+  const [year, month] = [historyState.year as Number, historyState.month as Number];
+  if (historyState.path === '/chart') {
+    const { total, datas } = await getMainChartData(year, month);
+    Model.publish('updateHistory', { ...historyState, total, data: datas });
+  } else {
+    const data = await getMonthData(year, month);
+    Model.publish('updateHistory', { ...historyState, data });
+  }
+}
+
 export default Model;
