@@ -1,5 +1,6 @@
 import { HistoryState } from '../types';
 import { getMainChartData, getMonthData } from '../apis/cashbookAPI';
+import { getPayments } from '../apis/paymentAPI';
 
 type Subscription = {
   [key: string]: Array<Function>;
@@ -50,9 +51,13 @@ async function fetchCashbookData(historyState: HistoryState) {
   if (historyState.path === '/chart') {
     const { total, datas } = await getMainChartData(year, month);
     Model.publish('updateHistory', { ...historyState, total, data: datas });
-  } else {
+  } else if (historyState.path === '/calendar') {
     const data = await getMonthData(year, month);
     Model.publish('updateHistory', { ...historyState, data });
+  } else if (historyState.path === '/') {
+    const data = await getMonthData(year, month);
+    const payments = await getPayments();
+    Model.publish('updateHistory', { ...historyState, cashbooks: data, payments });
   }
 }
 

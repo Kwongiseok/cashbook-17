@@ -11,6 +11,8 @@ export type HistoryState = {
   month?: number;
   type?: string;
 };
+export type PaymentType = { id: number; name: string };
+
 export type MainChartState = HistoryState & {
   total: number;
   data: ExpenditureDataList;

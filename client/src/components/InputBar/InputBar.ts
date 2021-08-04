@@ -2,11 +2,12 @@ import Component from '../../utils/Component';
 import ArrowIcon from '../../../public/images/arrow-down.svg';
 import DeleteIcon from '../../../public/images/deleteIcon.svg';
 import './inputBar.scss';
-import { CashbookType, CATEGORY, CATEGORY_TYPE, HistoryState } from '../../types';
+import { CashbookType, CATEGORY, CATEGORY_TYPE, HistoryState, PaymentType } from '../../types';
 import confirm from '../../utils/confirm/Confirm';
 import { listenByElement } from '../../utils/customEvent';
 import Alert from '../../utils/alert/Alert';
 import DatePicker from '../../components/DatePicker/DatePicker';
+import { createPayment } from '../../apis/paymentAPI';
 
 let dummyPayment = ['신한카드', '계좌이체', '현금'];
 
@@ -18,6 +19,7 @@ type InputType = {
   payment?: string;
   price?: number;
   addCashBook: (cashbook: CashbookType) => void;
+  payments: PaymentType[];
 };
 
 export default class InputBar extends Component<InputType> {
@@ -32,11 +34,10 @@ export default class InputBar extends Component<InputType> {
 
   mounted() {
     this.setPaymentList();
-
     const $datePickerBox = this.$target.querySelector('.input-bar__date-picker') as HTMLElement;
     new DatePicker($datePickerBox, {
-      year: Number(this.state.date?.split('-')[0]),
-      month: Number(this.state.date?.split('-')[1]),
+      year: Number(this.state.date?.split('-')[0] || history.state.year),
+      month: Number(this.state.date?.split('-')[1] || history.state.month),
     });
     listenByElement($datePickerBox, 'date-change', (e) => {
       this.setState({
@@ -253,18 +254,19 @@ export default class InputBar extends Component<InputType> {
 
   setPaymentList() {
     const $paymentDropdown = this.$target.querySelector('.input-bar__payment .input-dropdown');
-    dummyPayment.forEach((item) => {
+    this.state.payments.forEach((item) => {
+      const { name } = item;
       const $item = document.createElement('li');
       const $deleteButton = document.createElement('img');
-      $item.innerText = item;
-      $item.setAttribute('data-value', item);
+      $item.innerText = name;
+      $item.setAttribute('data-value', name);
       $item.addEventListener('click', () => {
         this.setState({
-          payment: item,
+          payment: name,
         });
       });
       $deleteButton.setAttribute('src', DeleteIcon);
-      $deleteButton.addEventListener('click', (e: MouseEvent) => this.deletePayment(e, item));
+      $deleteButton.addEventListener('click', (e: MouseEvent) => this.deletePayment(e, name));
       $item.appendChild($deleteButton);
       $paymentDropdown?.appendChild($item);
     });
@@ -278,9 +280,12 @@ export default class InputBar extends Component<InputType> {
     const result = await confirm('추가하실 결제수단을 적어주세요.');
     if (result) {
       dummyPayment.push(result); // 서버로 추가 요청 보내기
-      this.setState({
-        payment: result,
-      });
+      const newPayment = await createPayment(result);
+      if (newPayment) {
+        this.setState({
+          payment: result,
+        });
+      }
     }
   }
 

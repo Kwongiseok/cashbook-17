@@ -2,7 +2,7 @@ import Component from '../../utils/Component';
 import Model from '../../models/model';
 import DatePicker from '../../components/DatePicker/DatePicker';
 import InputBar from '../../components/InputBar/InputBar';
-import { HistoryState, CashcooksResponse, CashbookType } from '../../types';
+import { HistoryState, CashcooksResponse, CashbookType, PaymentType } from '../../types';
 import { DAY_OF_THE_WEEK } from '../../constants/days';
 import { CATEGORY_COLOR } from '../../constants/category';
 import { triggerByElement } from '../../utils/customEvent';
@@ -55,6 +55,7 @@ type MainViewState = {
   totalIncome: number;
   totalExpenditure: number;
   cashbooks: CashbookType[];
+  payments: PaymentType[];
 };
 
 export default class MainView extends Component<MainViewState> {
@@ -67,8 +68,9 @@ export default class MainView extends Component<MainViewState> {
       totalIncome: 0,
       totalExpenditure: 0,
       cashbooks: [],
+      payments: [],
     });
-    Model.subscribe('statechange', (data: HistoryState) => {
+    Model.subscribe('updateHistory', (data: HistoryState) => {
       if (data.path !== '/') return;
       this.setState(data);
       this.setCashbookData(this.state.year, this.state.month);
@@ -79,8 +81,7 @@ export default class MainView extends Component<MainViewState> {
   mounted() {
     const $inputBar = document.querySelector('.input-bar') as HTMLElement;
     const $cashbookList = document.querySelector('.cashbook-list') as HTMLUListElement;
-
-    new InputBar($inputBar, { addCashBook: this.addCashbook.bind(this) });
+    new InputBar($inputBar, { addCashBook: this.addCashbook.bind(this), payments: this.state.payments });
     this.setCashbookList($cashbookList);
   }
 
